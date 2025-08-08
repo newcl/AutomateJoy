@@ -1,0 +1,22 @@
+{
+  "name": "pody",
+  "version": "1.0.0",
+  "description": "Electron app that embeds n8n",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev"
+  },
+  "keywords": [
+    "electron",
+    "n8n"
+  ],
+  "author": "Pody Team",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^27.1.0"
+  },
+  "dependencies": {
+    "n8n": "^1.105.4"
+  }
+}
