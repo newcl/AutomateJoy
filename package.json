@@ -15,6 +15,7 @@
   ],
   "build": {
     "appId": "info.chenliang.pody",
+    "asar": false,
     "productName": "Pody",
     "files": [
       "**/*"
