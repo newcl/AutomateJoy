@@ -9,7 +9,7 @@ let n8nProcess;
 function startN8n() {
   // Use npx to start n8n from the installed npm package
   const n8nBinary = process.platform === 'win32'
-  ? path.join(process.cwd(), 'n8n-dist', 'node_modules', '.bin', 'n8n')
+  ? path.join(process.cwd(), 'n8n-dist', 'node_modules', '.bin', 'n8n.cmd')
   : path.join(process.cwd(), 'n8n-dist', 'node_modules', '.bin', 'n8n');
   
   n8nProcess = spawn(
