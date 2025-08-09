@@ -12,6 +12,13 @@
     "dist:clean": "rm -rf .cache .n8n-cache.json && npm run dist",
     "dist:unsigned": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --config electron-builder-unsigned.json --win --x64 --publish=never",
     "dist:fast:unsigned": "node scripts/optimize-build.js && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --config electron-builder-unsigned.json --win --x64 --publish=never",
+    "dist:nsis:fast": "node scripts/prepare-n8n-dist.js && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --config electron-builder-unsigned.json --win --x64 --publish=never",
+    "dist:optimized": "node scripts/optimize-n8n-dist.js && node scripts/optimize-build.js && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --config electron-builder-unsigned.json --win --x64 --publish=never",
+    "dist:debug": "cross-env DEBUG=electron-builder electron-builder --config electron-builder-unsigned.json --win --x64 --publish=never",
+    "dist:fast:debug": "node scripts/optimize-build.js && cross-env DEBUG=electron-builder electron-builder --config electron-builder-unsigned.json --win --x64 --publish=never",
+    "debug:build": "node scripts/debug-build.js",
+    "debug:nsis": "node scripts/check-nsis.js",
+    "optimize:n8n": "node scripts/optimize-n8n-dist.js",
     "build": "node scripts/build-with-options.js",
     "check-n8n-cache": "node scripts/check-n8n-cache.js",
     "build-n8n-cache": "node scripts/build-n8n-cache.js"
@@ -54,6 +61,7 @@
   "author": "Pody Team",
   "license": "MIT",
   "devDependencies": {
+    "archiver": "^7.0.1",
     "cross-env": "^10.0.0",
     "electron": "^27.1.0",
     "electron-builder": "^26.0.12"

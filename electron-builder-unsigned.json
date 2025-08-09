@@ -3,16 +3,8 @@
   "asar": true,
   "extraResources": [
     {
-      "from": "n8n-dist/node_modules",
-      "to": "n8n-dist/node_modules"
-    },
-    {
-      "from": "n8n-dist/package.json",
-      "to": "n8n-dist/package.json"
-    },
-    {
-      "from": "n8n-dist/package-lock.json",
-      "to": "n8n-dist/package-lock.json"
+      "from": "n8n-dist.zip",
+      "to": "n8n-dist.zip"
     }
   ],
   "productName": "Pody",
@@ -21,11 +13,20 @@
   ],
   "win": {
     "target": "nsis",
-    "icon": "build/icon.ico",
-    "signAndEditExecutable": false
+    "signAndEditExecutable": false,
+    "forceCodeSigning": false
   },
   "directories": {
     "buildResources": "build"
   },
-  "forceCodeSigning": false
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "Pody",
+    "deleteAppDataOnUninstall": false,
+    "include": "build/installer.nsh"
+  },
+  "compression": "store"
 }
