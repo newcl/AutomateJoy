@@ -3,3 +3,4 @@ dist
 .cache
 .n8n-cache.json
 n8n-dist/node_modules
+n8n-dist.zip

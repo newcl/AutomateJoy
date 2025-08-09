@@ -2,7 +2,7 @@
   ; Show progress for n8n-dist extraction
   DetailPrint "Installing n8n resources..."
   
-  ; Extract the pre-compressed n8n-dist.zip using native NSIS commands
+  ; Extract the pre-compressed n8n-dist.zip
   DetailPrint "Extracting n8n-dist resources..."
   
   ; Use NSIS built-in zip extraction (more efficient than PowerShell)

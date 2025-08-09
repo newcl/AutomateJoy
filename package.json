@@ -8,20 +8,9 @@
     "dev": "electron . --dev",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "dist:fast": "node scripts/optimize-build.js && electron-builder",
-    "dist:clean": "rm -rf .cache .n8n-cache.json && npm run dist",
-    "dist:unsigned": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --config electron-builder-unsigned.json --win --x64 --publish=never",
-    "dist:fast:unsigned": "node scripts/optimize-build.js && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --config electron-builder-unsigned.json --win --x64 --publish=never",
-    "dist:nsis:fast": "node scripts/prepare-n8n-dist.js && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --config electron-builder-unsigned.json --win --x64 --publish=never",
-    "dist:optimized": "node scripts/optimize-n8n-dist.js && node scripts/optimize-build.js && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --config electron-builder-unsigned.json --win --x64 --publish=never",
-    "dist:debug": "cross-env DEBUG=electron-builder electron-builder --config electron-builder-unsigned.json --win --x64 --publish=never",
-    "dist:fast:debug": "node scripts/optimize-build.js && cross-env DEBUG=electron-builder electron-builder --config electron-builder-unsigned.json --win --x64 --publish=never",
-    "debug:build": "node scripts/debug-build.js",
-    "debug:nsis": "node scripts/check-nsis.js",
-    "optimize:n8n": "node scripts/optimize-n8n-dist.js",
-    "build": "node scripts/build-with-options.js",
-    "check-n8n-cache": "node scripts/check-n8n-cache.js",
-    "build-n8n-cache": "node scripts/build-n8n-cache.js"
+    "build:zip": "node scripts/build-with-zip.js",
+    "prepare:zip": "node scripts/prepare-n8n-dist.js",
+    "setup:n8n": "node scripts/setup-n8n-dist.js"
   },
   "keywords": [
     "electron",
@@ -32,16 +21,8 @@
     "asar": true,
     "extraResources": [
       {
-        "from": "n8n-dist/node_modules",
-        "to": "n8n-dist/node_modules"
-      },
-      {
-        "from": "n8n-dist/package.json",
-        "to": "n8n-dist/package.json"
-      },
-      {
-        "from": "n8n-dist/package-lock.json",
-        "to": "n8n-dist/package-lock.json"
+        "from": "n8n-dist.zip",
+        "to": "n8n-dist.zip"
       }
     ],
     "productName": "Pody",
@@ -53,10 +34,22 @@
       "icon": "build/icon.ico",
       "signAndEditExecutable": false
     },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Pody",
+      "deleteAppDataOnUninstall": false,
+      "include": "build/installer-optimized.nsh",
+      "perMachine": false,
+      "runAfterFinish": false
+    },
     "directories": {
       "buildResources": "build"
     },
-    "forceCodeSigning": false
+    "forceCodeSigning": false,
+    "compression": "store"
   },
   "author": "Pody Team",
   "license": "MIT",

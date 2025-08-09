@@ -34,6 +34,30 @@ npm start
 npm run dev
 ```
 
+### Building
+
+The project uses an optimized build process that zips the `n8n-dist` folder for faster NSIS builds:
+
+```bash
+# Standard build (uses n8n-dist.zip for faster NSIS builds)
+npm run dist
+
+# Optimized build with zip creation
+npm run build:zip
+
+# Just prepare the zip file
+npm run prepare:zip
+```
+
+#### Build Process Details
+
+1. **Zipping**: The `n8n-dist` folder is compressed into `n8n-dist.zip` before building
+2. **Packaging**: Electron-builder includes the zip file as an extra resource
+3. **Installation**: During NSIS installation, the zip is automatically extracted to the resources folder
+4. **Runtime**: The main.js already handles both packaged and unpackaged paths correctly
+
+This approach significantly reduces build time and installer size while maintaining the same runtime functionality.
+
 ### Project Structure
 
 ```
@@ -41,6 +65,12 @@ pody/
 ├── main.js              # Main Electron process
 ├── index.html           # Main UI
 ├── package.json         # Dependencies and scripts
+├── scripts/             # Build and optimization scripts
+│   ├── prepare-n8n-dist.js    # Creates n8n-dist.zip
+│   ├── build-with-zip.js      # Orchestrates zip-based build
+│   └── before-pack.js         # Pre-build validation
+├── build/               # Build configuration
+│   └── installer.nsh   # NSIS installer script
 └── README.md
 ```
 
