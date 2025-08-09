@@ -7,7 +7,14 @@
     "start": "electron .",
     "dev": "electron . --dev",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "dist:fast": "node scripts/optimize-build.js && electron-builder",
+    "dist:clean": "rm -rf .cache .n8n-cache.json && npm run dist",
+    "dist:unsigned": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --config electron-builder-unsigned.json --win --x64 --publish=never",
+    "dist:fast:unsigned": "node scripts/optimize-build.js && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --config electron-builder-unsigned.json --win --x64 --publish=never",
+    "build": "node scripts/build-with-options.js",
+    "check-n8n-cache": "node scripts/check-n8n-cache.js",
+    "build-n8n-cache": "node scripts/build-n8n-cache.js"
   },
   "keywords": [
     "electron",
@@ -18,8 +25,16 @@
     "asar": true,
     "extraResources": [
       {
-        "from": "n8n-dist",
-        "to": "n8n-dist"
+        "from": "n8n-dist/node_modules",
+        "to": "n8n-dist/node_modules"
+      },
+      {
+        "from": "n8n-dist/package.json",
+        "to": "n8n-dist/package.json"
+      },
+      {
+        "from": "n8n-dist/package-lock.json",
+        "to": "n8n-dist/package-lock.json"
       }
     ],
     "productName": "Pody",
@@ -27,21 +42,23 @@
       "**/*"
     ],
     "win": {
-      "target": "portable",
-      "icon": "build/icon.ico"
+      "target": "nsis",
+      "icon": "build/icon.ico",
+      "signAndEditExecutable": false
     },
     "directories": {
       "buildResources": "build"
-    }
+    },
+    "forceCodeSigning": false
   },
   "author": "Pody Team",
   "license": "MIT",
   "devDependencies": {
+    "cross-env": "^10.0.0",
     "electron": "^27.1.0",
     "electron-builder": "^26.0.12"
   },
   "dependencies": {
-    
     "tree-kill": "^1.2.2"
   }
 }

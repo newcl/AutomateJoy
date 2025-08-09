@@ -1,0 +1,31 @@
+{
+  "appId": "info.chenliang.pody",
+  "asar": true,
+  "extraResources": [
+    {
+      "from": "n8n-dist/node_modules",
+      "to": "n8n-dist/node_modules"
+    },
+    {
+      "from": "n8n-dist/package.json",
+      "to": "n8n-dist/package.json"
+    },
+    {
+      "from": "n8n-dist/package-lock.json",
+      "to": "n8n-dist/package-lock.json"
+    }
+  ],
+  "productName": "Pody",
+  "files": [
+    "**/*"
+  ],
+  "win": {
+    "target": "nsis",
+    "icon": "build/icon.ico",
+    "signAndEditExecutable": false
+  },
+  "directories": {
+    "buildResources": "build"
+  },
+  "forceCodeSigning": false
+}

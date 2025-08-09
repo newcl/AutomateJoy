@@ -1,22 +1,92 @@
 const { app, BrowserWindow } = require('electron');
 const { spawn } = require('child_process');
 const path = require('path');
+const fs = require('fs');
 const kill = require('tree-kill');
-
 
 let n8nProcess;
 
-function startN8n() {
+// Function to check if resources are already unpacked
+function getN8nDistPath() {
+  if (!app.isPackaged) {
+    return path.join(process.cwd(), 'n8n-dist');
+  }
+
+  // Check if resources are already unpacked to user data directory
+  const unpackedPath = path.join(app.getPath('userData'), 'n8n-dist');
+  const n8nBinaryPath = path.join(unpackedPath, 'node_modules', '.bin', process.platform === 'win32' ? 'n8n.cmd' : 'n8n');
+  
+  if (fs.existsSync(n8nBinaryPath)) {
+    console.log('Using cached n8n resources from:', unpackedPath);
+    return unpackedPath;
+  }
+
+  // Resources not unpacked yet, need to copy them
+  console.log('Unpacking n8n resources to:', unpackedPath);
+  return unpackResources(unpackedPath);
+}
+
+// Function to unpack resources from the app bundle
+function unpackResources(targetPath) {
+  const sourcePath = path.join(process.resourcesPath, 'n8n-dist');
+  
+  if (!fs.existsSync(sourcePath)) {
+    throw new Error(`Source n8n-dist not found at: ${sourcePath}`);
+  }
+
+  // Create target directory if it doesn't exist
+  if (!fs.existsSync(targetPath)) {
+    fs.mkdirSync(targetPath, { recursive: true });
+  }
+
+  // Copy the entire n8n-dist folder
+  console.log('Starting to unpack n8n resources...');
+  copyFolderRecursive(sourcePath, targetPath);
+  
+  console.log('Successfully unpacked n8n resources to:', targetPath);
+  return targetPath;
+}
+
+// Function to recursively copy a folder
+function copyFolderRecursive(source, target) {
+  if (!fs.existsSync(target)) {
+    fs.mkdirSync(target, { recursive: true });
+  }
+
+  const items = fs.readdirSync(source);
+  
+  for (const item of items) {
+    const sourcePath = path.join(source, item);
+    const targetPath = path.join(target, item);
+    
+    const stat = fs.statSync(sourcePath);
+    
+    if (stat.isDirectory()) {
+      copyFolderRecursive(sourcePath, targetPath);
+    } else {
+      fs.copyFileSync(sourcePath, targetPath);
+    }
+  }
+}
+
+async function startN8n() {
+  const n8nDistPath = getN8nDistPath();
+  
   // Use npx to start n8n from the installed npm package
   const n8nBinary = process.platform === 'win32'
-  ? path.join(process.cwd(), 'n8n-dist', 'node_modules', '.bin', 'n8n.cmd')
-  : path.join(process.cwd(), 'n8n-dist', 'node_modules', '.bin', 'n8n');
+    ? path.join(n8nDistPath, 'node_modules', '.bin', 'n8n.cmd')
+    : path.join(n8nDistPath, 'node_modules', '.bin', 'n8n');
+  
+  if (!fs.existsSync(n8nBinary)) {
+    console.error(`n8n binary not found at: ${n8nBinary}`);
+    return;
+  }
   
   n8nProcess = spawn(
     n8nBinary,
     ['start'],
     {
-      cwd: process.cwd(),
+      cwd: n8nDistPath,
       env: {
         ...process.env,
         N8N_HOST: '127.0.0.1',
@@ -70,7 +140,13 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true
     },
-    title: 'Pody - n8n Workflow Automation'
+    title: 'Pody - n8n Workflow Automation',
+    show: false // Don't show until ready
+  });
+
+  // Show window when ready
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
   });
 
   // Wait a few seconds for n8n to boot, then load it directly
@@ -84,9 +160,15 @@ function createWindow() {
 }
 
 // When Electron is ready
-app.whenReady().then(() => {
-  startN8n();
-  createWindow();
+app.whenReady().then(async () => {
+  try {
+    // Start n8n (this will handle resource unpacking if needed)
+    await startN8n();
+    createWindow();
+  } catch (error) {
+    console.error('Failed to start application:', error);
+    app.quit();
+  }
 });
 
 // Quit when all windows are closed
