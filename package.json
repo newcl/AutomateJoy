@@ -5,16 +5,33 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "dev": "electron . --dev"
+    "dev": "electron . --dev",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "keywords": [
     "electron",
     "n8n"
   ],
+  "build": {
+    "appId": "info.chenliang.pody",
+    "productName": "Pody",
+    "files": [
+      "**/*"
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "build/icon.ico"
+    },
+    "directories": {
+      "buildResources": "build"
+    }
+  },
   "author": "Pody Team",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^27.1.0"
+    "electron": "^27.1.0",
+    "electron-builder": "^26.0.12"
   },
   "dependencies": {
     "n8n": "^1.105.4",
