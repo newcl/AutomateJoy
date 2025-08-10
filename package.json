@@ -18,41 +18,20 @@
   ],
   "build": {
     "appId": "info.chenliang.pody",
-    "asar": true,
-    "extraResources": [
-      {
-        "from": "n8n-dist.zip",
-        "to": "n8n-dist.zip"
-      }
-    ],
     "productName": "Pody",
     "files": [
-      "**/*"
+      "**/*",
+      "!n8n-dist/**",
+      "!n8n-dist.zip"
     ],
     "win": {
-      "target": "nsis",
+      "target": "portable",
       "icon": "build/icon.ico",
       "signAndEditExecutable": false
     },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "Pody",
-      "deleteAppDataOnUninstall": false,
-      "include": "build/installer-optimized.nsh",
-      "perMachine": false,
-      "runAfterFinish": false
-    },
-    "directories": {
-      "buildResources": "build"
-    },
-    "forceCodeSigning": false,
-    "compression": "store"
+    "forceCodeSigning": false
   },
-  "author": "Pody Team",
-  "license": "MIT",
+  "author": "Pody",
   "devDependencies": {
     "archiver": "^7.0.1",
     "cross-env": "^10.0.0",
