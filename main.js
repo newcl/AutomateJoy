@@ -166,15 +166,16 @@ function createWindow() {
     show: false, // show when ready
   });
 
-  // mainWindow.once('ready-to-show', () => {
-  //   console.log('Ready to show');
-  //   mainWindow.show();
+  mainWindow.once('ready-to-show', () => {
+    console.log('Ready to show');
+    mainWindow.show();
+  });
 
-  //   // Load n8n UI after a delay to ensure n8n backend started
-  //   // setTimeout(() => {
-  //   //   mainWindow.loadURL('http://127.0.0.1:5678');
-  //   // }, 4000);
-  // });
+  if (app.isPackaged) {
+    mainWindow.loadFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
+  } else {
+    mainWindow.loadURL('http://localhost:5173');
+  }
 
   if (process.argv.includes('--dev')) {
     mainWindow.webContents.openDevTools();
@@ -185,7 +186,7 @@ function createWindow() {
 app.whenReady().then(async () => {
   console.log('App ready');
   createWindow();
-  mainWindow.show();
+  // mainWindow.show();
   try {
     await startN8n();
   } catch (error) {
