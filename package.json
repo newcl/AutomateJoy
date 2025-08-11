@@ -8,7 +8,7 @@
     "dev": "electron . --dev",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "postdist2": "node scripts/build-with-zip.js"
+    "n8n:prepare": "node scripts/build-n8n-tar-gz.js"
   },
   "keywords": [
     "electron",
@@ -24,8 +24,8 @@
     ],
     "extraResources": [
       {
-        "from": "n8n-dist.zip",
-        "to": "n8n-dist.zip"
+        "from": "n8n-dist.tar.gz",
+        "to": "n8n-dist.tar.gz"
       }
     ],
     "win": {
@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "extract-zip": "^2.0.1",
+    "tar": "^7.4.3",
     "tree-kill": "^1.2.2"
   }
 }

@@ -1,3 +1,5 @@
+const { ipcMain } = require('electron');
+
 const { app, BrowserWindow } = require('electron');
 const { spawn } = require('child_process');
 const path = require('path');
@@ -17,42 +19,101 @@ console.error = (msg) => {
   process.stderr.write(msg + '\n');
   logToFile('ERROR: ' + msg);
 };
+
+const tar = require('tar');
+
+async function extractTarGzWithProgress(tarFile, outputDir, onProgress) {
+  const stat = fs.statSync(tarFile);
+  const totalSize = stat.size;
+
+  console.log(`extracting from ${tarFile} to ${outputDir}`);
+  let processedBytes = 0;
+
+  return new Promise((resolve, reject) => {
+    const readStream = fs.createReadStream(tarFile);
+
+    readStream.on('data', chunk => {
+      processedBytes += chunk.length;
+      if (onProgress) {
+        onProgress(processedBytes / totalSize);
+      }
+    });
+
+    readStream.on('error', err => {
+      console.error('Read stream error:', err);
+      reject(err);
+    });
+
+    const extractor = tar.x({ C: outputDir, gzip: false});
+
+    extractor.on('error', err => {
+      console.error('Extractor error:', err);
+      reject(err);
+    });
+
+    extractor.on('end', () => {
+      resolve();
+    });
+
+    readStream.pipe(extractor);
+  });
+}
+
+const n8nInstalledMarkFile = path.join(process.resourcesPath, 'n8n-dist', "n8n.installed");
+
+
 const extract = require('extract-zip');
 
 const kill = require('tree-kill');
 
+ipcMain.handle('check-mark-file', async () => {
+  if (!app.isPackaged) {
+    return false;
+  }
+
+  return fs.existsSync(n8nInstalledMarkFile);
+});
+
+
 let n8nProcess;
+
+function touchFile(filePath) {
+  const time = new Date();
+
+  try {
+    // Update the timestamp if file exists
+    fs.utimesSync(filePath, time, time);
+  } catch (err) {
+    // If file does not exist, create an empty file
+    fs.closeSync(fs.openSync(filePath, 'w'));
+  }
+}
 
 async function ensureN8n() {
   if (!app.isPackaged) {
     return;
   }
-  const targetPath = path.join(app.getPath('userData'), 'n8n-dist');
-  console.log("Checking n8d-dist");
-  if (!fs.existsSync(targetPath)) {
-    const args = process.argv.slice(1); // slice out the first arg (exe path)
-    console.log('App args:', args);
 
-    // Example: --n8n-zip="C:\some\path\n8n-dist.zip"
-    const zipArg = args.find(arg => arg.startsWith('--n8n-zip='));
-    let zipPathArg;
-    if (zipArg) {
-      zipPathArg = zipArg.split('=')[1];
-      console.log('Using n8n-dist.zip from:', zipPathArg);
-    } else {
-      // throw new Error(`Zip arg invalid ${zipArg}`);
-      const myZipPath = path.join(process.resourcesPath, 'n8n-dist.zip');
-      console.log(`fall back to ${myZipPath}`);
-      zipPathArg = myZipPath;
-    }
-
-    // const zipPath = path.join(process.cwd(), 'n8n-dist.zip');
-    const zipPath = zipPathArg;
-    console.log('Extracting n8n-dist...');
-    console.log(zipPath);
-    console.log(targetPath);
-    await extract(zipPath, { dir: targetPath });
+  
+  if(fs.existsSync(n8nInstalledMarkFile)) {
+    return;
   }
+  
+  const targetPath = path.join(process.resourcesPath, 'n8n-dist');
+  const zipPath = path.join(process.resourcesPath, 'n8n-dist.tar.gz');
+  console.log('Extracting n8n-dist...');
+  console.log(zipPath);
+  console.log(targetPath);
+  // await extract(zipPath, { dir: targetPath });
+  await extractTarGzWithProgress(zipPath, targetPath, (progress) => {
+    // if(mainWindow && mainWindow.webContents) {
+    //   mainWindow.webContents.send('untar-progress', progress);
+    // } else {
+    //   console.log(`progress update window ${mainWindow} web contents ${mainWindow.webContents}`);
+    // }
+    console.log(`progress ${progress}`);
+  });
+  touchFile(n8nInstalledMarkFile);
 }
 
 /**
@@ -219,14 +280,25 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js'),
     },
+    
     title: 'Pody - n8n Workflow Automation',
     show: false, // show when ready
   });
 
-  mainWindow.once('ready-to-show', () => {
+  mainWindow.once('ready-to-show', async () => {
     console.log('Ready to show');
     mainWindow.show();
+
+    try {
+      await ensureN8n();
+      await startN8n();
+      
+    } catch (error) {
+      console.error('Failed to start application:', error);
+      app.quit();
+    }
   });
 
   if (app.isPackaged) {
@@ -245,14 +317,7 @@ app.whenReady().then(async () => {
   console.log('App ready');
   createWindow();
   // mainWindow.show();
-  try {
-    await ensureN8n();
-    await startN8n();
-    
-  } catch (error) {
-    console.error('Failed to start application:', error);
-    app.quit();
-  }
+  
 });
 
 // Quit app when all windows are closed (except on macOS)

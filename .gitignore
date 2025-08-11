@@ -4,5 +4,6 @@ dist
 .n8n-cache.json
 n8n-dist/node_modules
 n8n-dist.zip
+n8n-dist.tar.gz
 .DS_Store
 **/.DS_Store

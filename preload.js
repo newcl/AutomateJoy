@@ -1,0 +1,7 @@
+const { contextBridge, ipcRenderer } = require('electron');
+
+console.log("what");
+
+contextBridge.exposeInMainWorld('electronAPI', {
+  checkMarkerFile: () => ipcRenderer.invoke('check-mark-file'),
+});
