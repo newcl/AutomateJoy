@@ -21,7 +21,7 @@ function N8nStatus() {
     }
 
     // Start polling every 1 second
-    intervalId = setInterval(checkN8n, 5000);
+    intervalId = setInterval(checkN8n, 1000);
 
     // Run once immediately
     checkN8n();

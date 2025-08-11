@@ -1,10 +1,56 @@
 const { app, BrowserWindow } = require('electron');
 const { spawn } = require('child_process');
 const path = require('path');
+
 const fs = require('fs');
+const logFile = path.join(app.getPath('userData'), 'pody.log');
+
+function logToFile(message) {
+  fs.appendFileSync(logFile, message + '\n');
+}
+
+console.log = (msg) => {
+  process.stdout.write(msg + '\n'); // keep normal behavior
+  logToFile(msg);
+};
+console.error = (msg) => {
+  process.stderr.write(msg + '\n');
+  logToFile('ERROR: ' + msg);
+};
+const extract = require('extract-zip');
+
 const kill = require('tree-kill');
 
 let n8nProcess;
+
+async function ensureN8n() {
+  if (!app.isPackaged) {
+    return;
+  }
+  const targetPath = path.join(app.getPath('userData'), 'n8n-dist');
+  console.log("Checking n8d-dist");
+  if (!fs.existsSync(targetPath)) {
+    const args = process.argv.slice(1); // slice out the first arg (exe path)
+    console.log('App args:', args);
+
+    // Example: --n8n-zip="C:\some\path\n8n-dist.zip"
+    const zipArg = args.find(arg => arg.startsWith('--n8n-zip='));
+    let zipPathArg;
+    if (zipArg) {
+      zipPathArg = zipArg.split('=')[1];
+      console.log('Using n8n-dist.zip from:', zipPathArg);
+    } else {
+      throw new Error(`Zip arg invalid ${zipArg}`);
+    }
+
+    // const zipPath = path.join(process.cwd(), 'n8n-dist.zip');
+    const zipPath = zipPathArg;
+    console.log('Extracting n8n-dist...');
+    console.log(zipPath);
+    console.log(targetPath);
+    await extract(zipPath, { dir: targetPath });
+  }
+}
 
 /**
  * Get or unpack n8n-dist path.
@@ -17,24 +63,28 @@ function getN8nDistPath() {
     return path.join(process.cwd(), 'n8n-dist');
   }
 
-  // Packaged mode: extract to userData folder if not already unpacked
   const unpackedPath = path.join(app.getPath('userData'), 'n8n-dist');
-  const n8nBinaryPath = path.join(
-    unpackedPath,
-    'node_modules',
-    '.bin',
-    process.platform === 'win32' ? 'n8n.cmd' : 'n8n'
-  );
-
-  if (fs.existsSync(n8nBinaryPath)) {
-    console.log('Using cached n8n resources from:', unpackedPath);
-    return unpackedPath;
-  }
-
-  // Unpack resources if not unpacked
-  console.log('Unpacking n8n resources to:', unpackedPath);
-  unpackResources(unpackedPath);
   return unpackedPath;
+  // return path.join(process.resourcesPath, 'n8n-dist');
+
+  // Packaged mode: extract to userData folder if not already unpacked
+  // const unpackedPath = path.join(app.getPath('userData'), 'n8n-dist');
+  // const n8nBinaryPath = path.join(
+  //   unpackedPath,
+  //   'node_modules',
+  //   '.bin',
+  //   process.platform === 'win32' ? 'n8n.cmd' : 'n8n'
+  // );
+
+  // if (fs.existsSync(n8nBinaryPath)) {
+  //   console.log('Using cached n8n resources from:', unpackedPath);
+  //   return unpackedPath;
+  // }
+
+  // // Unpack resources if not unpacked
+  // console.log('Unpacking n8n resources to:', unpackedPath);
+  // unpackResources(unpackedPath);
+  // return unpackedPath;
 }
 
 /**
@@ -155,6 +205,11 @@ let mainWindow;
  * Create main Electron browser window.
  */
 function createWindow() {
+
+  if (mainWindow) {
+    return; // Window already exists
+  }
+
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
@@ -188,7 +243,9 @@ app.whenReady().then(async () => {
   createWindow();
   // mainWindow.show();
   try {
+    await ensureN8n();
     await startN8n();
+    
   } catch (error) {
     console.error('Failed to start application:', error);
     app.quit();
@@ -209,6 +266,11 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+// app.on('ready', async () => {
+//   console.log("app.ready")
+//   await ensureN8n();
+// });
 
 // Clean up n8n on app quit
 app.on('will-quit', (event) => {

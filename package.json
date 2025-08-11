@@ -8,9 +8,7 @@
     "dev": "electron . --dev",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "build:zip": "node scripts/build-with-zip.js",
-    "prepare:zip": "node scripts/prepare-n8n-dist.js",
-    "setup:n8n": "node scripts/setup-n8n-dist.js"
+    "postdist": "node scripts/build-with-zip.js"
   },
   "keywords": [
     "electron",
@@ -39,6 +37,7 @@
     "electron-builder": "^26.0.12"
   },
   "dependencies": {
+    "extract-zip": "^2.0.1",
     "tree-kill": "^1.2.2"
   }
 }

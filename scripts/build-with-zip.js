@@ -1,45 +1,59 @@
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const archiver = require('archiver');
 
-console.log('🚀 Starting optimized build process with n8n-dist.zip...');
+const releaseDir = path.resolve(__dirname, '../dist');
+const n8nSource = path.resolve(__dirname, '../n8n-dist');
+const n8nZip = path.join(releaseDir, 'n8n-dist.zip');
 
-// Step 1: Check if n8n-dist exists
-const n8nDistPath = path.join(__dirname, '..', 'n8n-dist');
-if (!fs.existsSync(n8nDistPath)) {
-  console.error('❌ n8n-dist folder not found! Please run npm install first.');
-  process.exit(1);
+async function zipFolder(sourceDir, outPath) {
+  const output = fs.createWriteStream(outPath);
+  const archive = archiver('zip', { zlib: { level: 9 } });
+
+  return new Promise((resolve, reject) => {
+    output.on('close', resolve);
+    archive.on('error', reject);
+
+    archive.pipe(output);
+    archive.directory(sourceDir, false);
+    archive.finalize();
+  });
 }
 
-// Step 2: Create the zip file
-console.log('📦 Creating n8n-dist.zip...');
-try {
-  execSync('node scripts/prepare-n8n-dist.js', { stdio: 'inherit' });
-} catch (error) {
-  console.error('❌ Failed to create n8n-dist.zip:', error);
-  process.exit(1);
-}
+(async () => {
+  try {
+    console.log('Zipping n8n-dist folder...');
+    await zipFolder(n8nSource, n8nZip);
+    console.log('Folder zipped to:', n8nZip);
 
-// Step 3: Verify zip was created
-const zipPath = path.join(__dirname, '..', 'n8n-dist.zip');
-if (!fs.existsSync(zipPath)) {
-  console.error('❌ n8n-dist.zip was not created!');
-  process.exit(1);
-}
+    // Now do your existing archiver logic for the final package:
+    const exeName = fs.readdirSync(releaseDir).find(f => f.endsWith('.exe'));
+    if (!exeName) {
+      console.error('No portable exe found in release folder!');
+      process.exit(1);
+    }
 
-const zipStats = fs.statSync(zipPath);
-const zipSizeMB = (zipStats.size / 1024 / 1024).toFixed(2);
-console.log(`✅ n8n-dist.zip created successfully (${zipSizeMB} MB)`);
+    // Copy start cmd
+    const startCmdSource = path.resolve(__dirname, '../startup.cmd');
+    const startCmdTarget = path.join(releaseDir, 'startup.cmd');
+    fs.copyFileSync(startCmdSource, startCmdTarget);
 
-// Step 4: Run electron-builder
-console.log('🔨 Starting electron-builder...');
-try {
-  execSync('npx electron-builder', { stdio: 'inherit' });
-  console.log('✅ Build completed successfully!');
-} catch (error) {
-  console.error('❌ Build failed:', error);
-  process.exit(1);
-}
+    const outputZipPath = path.join(releaseDir, 'MyApp_with_n8n.zip');
+    console.log('Creating final delivery package...');
+    const output = fs.createWriteStream(outputZipPath);
+    const archive = archiver('zip', { zlib: { level: 9 } });
 
-console.log('🎉 Build process completed!');
-console.log('💡 The installer will now extract n8n-dist.zip during installation for faster builds.');
+    output.on('close', () => {
+      console.log(`Final package created: ${outputZipPath} (${archive.pointer()} bytes)`);
+    });
+    archive.on('error', err => { throw err; });
+
+    archive.pipe(output);
+    archive.file(path.join(releaseDir, exeName), { name: exeName });
+    archive.file(n8nZip, { name: 'n8n-dist.zip' });
+    archive.finalize();
+  } catch (err) {
+    console.error('Error during packaging:', err);
+    process.exit(1);
+  }
+})();
