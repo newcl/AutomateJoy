@@ -302,6 +302,7 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
       preload: path.join(__dirname, 'preload.js'),
+      sandbox: false
     },
     icon: path.join(__dirname, 'icons/icon.png'),
     title: 'AutomateJoy - powered by n8n',

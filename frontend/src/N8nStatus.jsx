@@ -1,4 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { Button, Spin } from 'antd';
+
+const openUrl = () => {
+  window.electronAPI.openUrl('http://localhost:5678')
+}
+
 
 function N8nStatus() {
   const [status, setStatus] = useState('starting');
@@ -31,9 +37,9 @@ function N8nStatus() {
 
   return (
     <div>
-      <h3>n8n Status: {status}</h3>
-      {status === 'loading' && <div>Loading n8n backend...</div>}
-      {status === 'ready' && <div>n8n is ready!</div>}
+      {<Button type="primary" loading={status !== 'ready'} disabled={status !== 'ready'} onClick={openUrl}>Open n8n In Browser</Button>}
+      <div>This app is for testing purpose only.</div>
+      <div>Please use <a href='https://n8n.com'>n8n.com</a> for hosted experience.</div>
     </div>
   );
 }

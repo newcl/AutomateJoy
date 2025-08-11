@@ -28,10 +28,18 @@ function App() {
     });
   }, []);
 
-  if (markerExists === null || !markerExists) {
+  if (markerExists === null) {
+    return (<Flex gap="small" vertical>
+      <Spin size='large' />
+    </Flex>      );
+  }
+
+  if (!markerExists) {
     return (<Flex gap="small" vertical>
       <Spin size='large' />
       {progress != null && <Progress percent={(progress*100).toFixed(2)} status="active" />}
+      <div>This app is for testing purpose only.</div>
+      <div>Please use <a href='https://n8n.com'>n8n.com</a> for hosted experience.</div>
     </Flex>      );
   }
 

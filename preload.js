@@ -1,6 +1,9 @@
-const { contextBridge, ipcRenderer } = require('electron');
+const electron = require('electron');
+const { contextBridge, ipcRenderer } = electron;
+const shell = electron.shell;
 
 console.log("what");
+console.log(shell);
 
 contextBridge.exposeInMainWorld('electronAPI', {
   checkMarkerFile: () => ipcRenderer.invoke('check-mark-file'),
@@ -9,5 +12,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   },
   onUntarComplete: (callback) => {
     ipcRenderer.on('untar-complete', (event) => callback());
-  }
+  },
+  openUrl: (url) => shell.openExternal(url)
 });
