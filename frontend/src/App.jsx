@@ -7,7 +7,7 @@ import './App.css'
 import N8nStatus from './N8nStatus'
 import { Flex, Progress, Spin } from 'antd';
 
-const { ipcRenderer } = window.require('electron');
+
 
 
 function App() {
@@ -26,24 +26,22 @@ function App() {
     }
     check();
 
-    ipcRenderer.on('untar-progress', (event, prog) => {
+    window.electronAPI.onUntarProgress((prog) => {
+      console.log(`receiving progress ${prog}`);
       setProgress(prog);
-      check();
+      check(); // your custom function
     });
   }, []);
 
   if (markerExists === null || !markerExists) {
     return (<Flex gap="small" vertical>
       <Spin size='large' />
-      {progress != null && <Progress value={progress} />}
+      {progress != null && <Progress percent={(progress*100).toFixed(2)} status="active" />}
     </Flex>      );
   }
 
   return (
     <div>
-      <Flex gap="small" vertical>
-        <Progress percent={50} status="active" />
-      </Flex>      
       <N8nStatus />
       
     </div>

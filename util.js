@@ -38,7 +38,7 @@ async function extractTarGzWithProgress(tarFile, outputDir, onProgress) {
 // Test call:
 (async () => {
   
-  const testTarFile = String.raw`C:\Users\chenl\AppData\Local\Programs\pody\resources\n8n-dist.tar.gz`;
+  const testTarFile = String.raw`C:\Users\chenl\AppData\Local\Programs\pody\resources\n8n-dist.tar`;
 
   const outputFolder = String.raw`C:\Users\chenl\AppData\Local\Programs\pody\resources\n8n-dist`;
 

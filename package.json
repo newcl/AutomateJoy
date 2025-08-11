@@ -24,8 +24,8 @@
     ],
     "extraResources": [
       {
-        "from": "n8n-dist.tar.gz",
-        "to": "n8n-dist.tar.gz"
+        "from": "n8n-dist.tar",
+        "to": "n8n-dist.tar"
       }
     ],
     "win": {

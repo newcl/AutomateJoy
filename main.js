@@ -29,6 +29,10 @@ async function extractTarGzWithProgress(tarFile, outputDir, onProgress) {
   console.log(`extracting from ${tarFile} to ${outputDir}`);
   let processedBytes = 0;
 
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+
   return new Promise((resolve, reject) => {
     const readStream = fs.createReadStream(tarFile);
 
@@ -51,15 +55,25 @@ async function extractTarGzWithProgress(tarFile, outputDir, onProgress) {
       reject(err);
     });
 
-    extractor.on('end', () => {
+    extractor.on('close', () => {
       resolve();
     });
 
     readStream.pipe(extractor);
   });
+
+  // if (!fs.existsSync(outputDir)) {
+  //   fs.mkdirSync(outputDir, { recursive: true });
+  // }
+
+  // return tar.x({
+  //   file: tarFile,
+  //   C: outputDir,
+  //   gzip: false
+  // });
 }
 
-const n8nInstalledMarkFile = path.join(process.resourcesPath, 'n8n-dist', "n8n.installed");
+const n8nInstalledMarkFile = path.join(process.resourcesPath, "n8n.installed");
 
 
 const extract = require('extract-zip');
@@ -68,7 +82,7 @@ const kill = require('tree-kill');
 
 ipcMain.handle('check-mark-file', async () => {
   if (!app.isPackaged) {
-    return false;
+    return true;
   }
 
   return fs.existsSync(n8nInstalledMarkFile);
@@ -94,25 +108,31 @@ async function ensureN8n() {
     return;
   }
 
-  
+  console.log(`checking touch file ${n8nInstalledMarkFile}`);
   if(fs.existsSync(n8nInstalledMarkFile)) {
     return;
   }
-  
-  const targetPath = path.join(process.resourcesPath, 'n8n-dist');
-  const zipPath = path.join(process.resourcesPath, 'n8n-dist.tar.gz');
+
+  let targetPath;
+  let zipPath;
+  if (app.isPackaged) {
+    targetPath = path.join(process.resourcesPath, 'n8n-dist');
+    zipPath = path.join(process.resourcesPath, 'n8n-dist.tar');  
+  } else {
+    targetPath = String.raw`C:\Users\chenl\AppData\Local\Programs\pody\resources\n8n-dist`;
+    zipPath = String.raw`C:\Users\chenl\AppData\Local\Programs\pody\resources\n8n-dist.tar`;
+  }
+
   console.log('Extracting n8n-dist...');
   console.log(zipPath);
   console.log(targetPath);
   // await extract(zipPath, { dir: targetPath });
   await extractTarGzWithProgress(zipPath, targetPath, (progress) => {
-    // if(mainWindow && mainWindow.webContents) {
-    //   mainWindow.webContents.send('untar-progress', progress);
-    // } else {
-    //   console.log(`progress update window ${mainWindow} web contents ${mainWindow.webContents}`);
-    // }
-    console.log(`progress ${progress}`);
+    // console.log(`progress ${progress}`);
+    mainWindow.webContents.send('untar-progress', progress);
   });
+  
+  console.log(`touching ${n8nInstalledMarkFile}`);
   touchFile(n8nInstalledMarkFile);
 }
 
@@ -127,9 +147,9 @@ function getN8nDistPath() {
     return path.join(process.cwd(), 'n8n-dist');
   }
 
-  const unpackedPath = path.join(app.getPath('userData'), 'n8n-dist');
-  return unpackedPath;
-  // return path.join(process.resourcesPath, 'n8n-dist');
+  // const unpackedPath = path.join(app.getPath('userData'), 'n8n-dist');
+  // return unpackedPath;
+  return path.join(process.resourcesPath, 'n8n-dist');
 
   // Packaged mode: extract to userData folder if not already unpacked
   // const unpackedPath = path.join(app.getPath('userData'), 'n8n-dist');
@@ -306,6 +326,11 @@ function createWindow() {
   } else {
     mainWindow.loadURL('http://localhost:5173');
   }
+
+  mainWindow.webContents.on('did-finish-load', () => {
+    console.log('Renderer page fully loaded');
+    // You can send IPC messages or do other setup here
+  });
 
   if (process.argv.includes('--dev')) {
     mainWindow.webContents.openDevTools();

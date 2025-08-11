@@ -6,7 +6,7 @@ const tar = require('tar');
 
 const releaseDir = path.resolve(__dirname, '../');
 const n8nSource = path.resolve(__dirname, '../n8n-dist');
-const n8nZip = path.join(releaseDir, 'n8n-dist.tar.gz');
+const n8nZip = path.join(releaseDir, 'n8n-dist.tar');
 
 async function compressFolder(sourceDir, outputFile) {
   await tar.c(
