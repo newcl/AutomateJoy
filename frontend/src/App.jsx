@@ -7,27 +7,22 @@ import './App.css'
 import N8nStatus from './N8nStatus'
 import { Flex, Progress, Spin } from 'antd';
 
-
-
-
 function App() {
   const [markerExists, setMarkerExists] = useState(null);
   const [progress, setProgress] = useState(0);
 
-
   useEffect(() => {
-    
-
     async function check() {
-      console.log(window);
-      console.log(window.electronAPI);
       const exists = await window.electronAPI.checkMarkerFile();
       setMarkerExists(exists);
     }
     check();
+    
+    window.electronAPI.onUntarComplete(() => {
+      setMarkerExists(true);
+    });
 
     window.electronAPI.onUntarProgress((prog) => {
-      console.log(`receiving progress ${prog}`);
       setProgress(prog);
       check(); // your custom function
     });
@@ -43,7 +38,6 @@ function App() {
   return (
     <div>
       <N8nStatus />
-      
     </div>
   )
 }

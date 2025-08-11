@@ -6,5 +6,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   checkMarkerFile: () => ipcRenderer.invoke('check-mark-file'),
   onUntarProgress: (callback) => {
     ipcRenderer.on('untar-progress', (event, prog) => callback(prog));
+  },
+  onUntarComplete: (callback) => {
+    ipcRenderer.on('untar-complete', (event) => callback());
   }
 });

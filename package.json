@@ -1,12 +1,13 @@
 {
-  "name": "pody",
+  "name": "AutomateJoy",
   "version": "1.0.0",
-  "description": "Electron app that embeds n8n",
+  "description": "Powered by n8n",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "dev": "electron . --dev",
     "pack": "electron-builder --dir",
+    "predist": "cd frontend && npm install && npm run build",
     "dist": "electron-builder",
     "n8n:prepare": "node scripts/build-n8n-tar-gz.js"
   },
@@ -15,8 +16,9 @@
     "n8n"
   ],
   "build": {
-    "appId": "info.chenliang.pody",
-    "productName": "Pody",
+    "appId": "com.automatejoy",
+    "productName": "AutomateJoy",
+    "icon": "icons/icon.ico",
     "files": [
       "**/*",
       "!n8n-dist/**",
@@ -30,12 +32,15 @@
     ],
     "win": {
       "target": "nsis",
-      "icon": "build/icon.ico",
+      "icon": "icons/icon.ico",
       "signAndEditExecutable": false
+    },
+    "nsis": {
+      "installerIcon": "icons/icon.ico",
+      "uninstallerIcon": "icons/icon.ico"
     },
     "forceCodeSigning": false
   },
-  "author": "Pody",
   "devDependencies": {
     "archiver": "^7.0.1",
     "cross-env": "^10.0.0",

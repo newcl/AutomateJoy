@@ -134,6 +134,7 @@ async function ensureN8n() {
   
   console.log(`touching ${n8nInstalledMarkFile}`);
   touchFile(n8nInstalledMarkFile);
+  mainWindow.webContents.send('untar-complete');
 }
 
 /**
@@ -302,8 +303,8 @@ function createWindow() {
       contextIsolation: true,
       preload: path.join(__dirname, 'preload.js'),
     },
-    
-    title: 'Pody - n8n Workflow Automation',
+    icon: path.join(__dirname, 'icons/icon.png'),
+    title: 'AutomateJoy - powered by n8n',
     show: false, // show when ready
   });
 
