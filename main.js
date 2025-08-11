@@ -40,7 +40,10 @@ async function ensureN8n() {
       zipPathArg = zipArg.split('=')[1];
       console.log('Using n8n-dist.zip from:', zipPathArg);
     } else {
-      throw new Error(`Zip arg invalid ${zipArg}`);
+      // throw new Error(`Zip arg invalid ${zipArg}`);
+      const myZipPath = path.join(process.resourcesPath, 'n8n-dist.zip');
+      console.log(`fall back to ${myZipPath}`);
+      zipPathArg = myZipPath;
     }
 
     // const zipPath = path.join(process.cwd(), 'n8n-dist.zip');

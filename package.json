@@ -8,7 +8,7 @@
     "dev": "electron . --dev",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "postdist": "node scripts/build-with-zip.js"
+    "postdist2": "node scripts/build-with-zip.js"
   },
   "keywords": [
     "electron",
@@ -22,8 +22,14 @@
       "!n8n-dist/**",
       "!n8n-dist.zip"
     ],
+    "extraResources": [
+      {
+        "from": "n8n-dist.zip",
+        "to": "n8n-dist.zip"
+      }
+    ],
     "win": {
-      "target": "portable",
+      "target": "nsis",
       "icon": "build/icon.ico",
       "signAndEditExecutable": false
     },
