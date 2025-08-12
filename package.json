@@ -16,7 +16,17 @@
     "predist": "cd frontend && npm install && npm run build",
     "dist": "electron-builder",
     "n8n:prepare": "node scripts/build-n8n-tar.js",
-    "release": "npm run dist -- --publish always"
+    "release": "npm run dist -- --publish always",
+    "prebuild-node": "node ./scripts/copy-node-binary.js $TARGET_ARCH",
+    "build-mac-arm64": "cross-env TARGET_ARCH=arm64 npm run prebuild-node && electron-builder --mac dmg --arm64",
+    "build-mac-x64": "cross-env TARGET_ARCH=x64 npm run prebuild-node && electron-builder --mac dmg --x64",
+    "build-win-x64": "cross-env TARGET_ARCH=x64 npm run prebuild-node && electron-builder --win nsis --x64",
+    "build-win-x86": "cross-env TARGET_ARCH=x86 npm run prebuild-node && electron-builder --win nsis --x86",
+    "release-mac-arm64": "cross-env TARGET_ARCH=arm64 npm run prebuild-node && electron-builder --mac dmg --arm64 --publish=always --config.extraMetadata.version=1.0.0-mac-arm64",
+    "release-mac-x64": "cross-env TARGET_ARCH=x64 npm run prebuild-node && electron-builder --mac dmg --x64 --publish=always --config.extraMetadata.version=1.0.0-mac-x64",
+    "release-win-x64": "cross-env TARGET_ARCH=x64 npm run prebuild-node && electron-builder --win nsis --x64 --publish=always --config.extraMetadata.version=1.0.0-win-x64",
+    "release-win-x86": "cross-env TARGET_ARCH=x86 npm run prebuild-node && electron-builder --win nsis --x86 --publish=always --config.extraMetadata.version=1.0.0-win-x86",
+    "release-all": "npm run release-mac-arm64 && npm run release-mac-x64 && npm run release-win-x64 && npm run release-win-x86"
   },
   "keywords": [
     "electron",
@@ -25,22 +35,46 @@
   "build": {
     "appId": "com.automatejoy",
     "productName": "AutomateJoy",
-    "icon": "icons/icon.ico",
     "files": [
       "**/*",
       "!n8n-dist/**",
-      "!n8n-dist.zip"
+      "!n8n-dist.zip",
+      "!bin/",
+      "!build-node/"
     ],
     "extraResources": [
       {
         "from": "n8n-dist.tar",
         "to": "n8n-dist.tar"
+      },
+      {
+        "from": "build-node",
+        "to": "bin"
       }
     ],
     "win": {
       "target": "nsis",
       "icon": "icons/icon.ico",
       "signAndEditExecutable": false
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        }
+      ],
+      "category": "public.app-category.productivity",
+      "icon": "icons/icon.icns"
+    },
+    "dmg": {
+      
+      "icon": "icons/icon.icns",
+      "iconSize": 100,
+      "contents": [
+        { "x": 130, "y": 220 },
+        { "x": 410, "y": 220, "type": "link", "path": "/Applications" }
+      ]
     },
     "publish": [
       {

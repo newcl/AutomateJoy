@@ -8,3 +8,5 @@ n8n-dist.tar
 n8n-dist.tar.gz
 .DS_Store
 **/.DS_Store
+bin/
+build-node/

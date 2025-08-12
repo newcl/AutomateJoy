@@ -221,6 +221,29 @@ function unpackResources(targetPath) {
  * Spawns n8n CLI from unpacked folder.
  */
 async function startN8n() {
+  const platform = process.platform; // 'win32', 'darwin', 'linux'
+  const arch = process.arch; // 'x64', 'arm64', 'ia32', etc.
+  let nodeDir;
+  if (app.isPackaged) {
+    nodeDir = path.join(process.resourcesPath, 'bin', arch);
+  } else {
+    nodeDir = path.join(__dirname, 'bin', arch);
+  }
+  
+  // Determine Node binary name & path based on platform
+  let nodeBinaryName;
+  if (platform === 'win32') {
+    nodeBinaryName = 'node.exe';
+  } else if(platform === 'darwin') {
+    nodeBinaryName = 'node';
+  } else {
+    console.error(`unsupported platform: ${platform}`);
+    return;
+  }
+
+  // Path to bundled Node binary inside app resources
+  const nodeBinary = path.join(nodeDir, nodeBinaryName);
+
   const n8nDistPath = getN8nDistPath();
 
   const n8nBinary = process.platform === 'win32'
@@ -232,13 +255,16 @@ async function startN8n() {
     return;
   }
 
+  const env = { ...process.env };
+  env.PATH = `${nodeDir}${path.delimiter}${env.PATH || ''}`;
+
   n8nProcess = spawn(
     n8nBinary,
     ['start'],
     {
       cwd: n8nDistPath,
       env: {
-        ...process.env,
+        ...env,
         N8N_HOST: '127.0.0.1',
         N8N_PORT: '5678',
         N8N_USER_FOLDER: path.join(app.getPath('userData'), 'n8n-data'),
