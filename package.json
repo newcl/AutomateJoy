@@ -4,10 +4,9 @@
   "description": "Powered by n8n",
   "author": "Liang Chen",
   "repository": {
-      "type": "git",
-      "url": "https://github.com/newcl/AutomateJoy.git"
-    },
-  
+    "type": "git",
+    "url": "https://github.com/newcl/AutomateJoy.git"
+  },
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -61,19 +60,29 @@
       "target": [
         {
           "target": "dmg",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         }
       ],
       "category": "public.app-category.productivity",
       "icon": "icons/icon.icns"
     },
     "dmg": {
-      
       "icon": "icons/icon.icns",
       "iconSize": 100,
       "contents": [
-        { "x": 130, "y": 220 },
-        { "x": 410, "y": 220, "type": "link", "path": "/Applications" }
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
       ]
     },
     "publish": [

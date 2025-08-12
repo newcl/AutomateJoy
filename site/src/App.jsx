@@ -70,12 +70,12 @@ export default function App() {
               <Button
                 type="primary"
                 icon={<WindowsOutlined />}
-                href="https://github.com/newcl/AutomateJoy/releases/latest/download/AutomateJoy-Setup-1.0.0.exe"
+                href="https://github.com/newcl/AutomateJoy/releases/download/v1.0.0-win-x64/AutomateJoy-Setup-1.0.0-win-x64.exe"
                 target="_blank"
                 rel="noreferrer"
                 size="large"
               >
-                Windows
+                Windows X64
               </Button>
             </Col>
             <Col>
