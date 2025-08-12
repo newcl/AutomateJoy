@@ -2,6 +2,12 @@
   "name": "AutomateJoy",
   "version": "1.0.0",
   "description": "Powered by n8n",
+  "author": "Liang Chen",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/newcl/pody.git"
+    },
+  
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -9,7 +15,8 @@
     "pack": "electron-builder --dir",
     "predist": "cd frontend && npm install && npm run build",
     "dist": "electron-builder",
-    "n8n:prepare": "node scripts/build-n8n-tar-gz.js"
+    "n8n:prepare": "node scripts/build-n8n-tar-gz.js",
+    "release": "npm run dist -- --publish always"
   },
   "keywords": [
     "electron",
@@ -35,6 +42,14 @@
       "icon": "icons/icon.ico",
       "signAndEditExecutable": false
     },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "newcl",
+        "repo": "pody",
+        "releaseType": "release"
+      }
+    ],
     "nsis": {
       "installerIcon": "icons/icon.ico",
       "uninstallerIcon": "icons/icon.ico"
