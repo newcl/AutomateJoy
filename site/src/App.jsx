@@ -79,19 +79,19 @@ export default function App() {
               </Button>
             </Col>
             <Col>
-            <Badge count="Coming Soon" color="#faad14" offset={[10, 0]}>
+            
             <Button
                 type="primary"
                 icon={<AppleOutlined />}
-                href="https://github.com/newcl/AutomateJoy/releases/latest/download/AutomateJoy-1.0.0.dmg"
+                href="https://github.com/newcl/AutomateJoy/releases/download/v1.0.0-mac-arm64/AutomateJoy-1.0.0-mac-arm64-arm64.dmg"
                 target="_blank"
                 rel="noreferrer"
                 size="large"
-                disabled
+                
               >
-                Mac
+                Mac ARM 64
               </Button>
-    </Badge>
+    
               
             </Col>
           </Row>
