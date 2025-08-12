@@ -32,7 +32,7 @@ export default function App() {
 
         <Card style={{ marginBottom: 24 }}>
           <Title level={4}>What’s n8n?</Title>
-          <Paragraph style={{ lineHeight: '1.6' }}>
+          <Paragraph style={{ lineHeight: '1.7', fontSize: '18px' }}>
             n8n is like your personal automation wizard{" "}
             <RocketOutlined /> — it connects all your apps and services together,
             so boring, repetitive tasks just… disappear. AutomateJoy makes this powerful
@@ -45,13 +45,16 @@ export default function App() {
         <Card style={{ marginBottom: 24 }}>
           <Title level={4}>How to try it</Title>
           <List>
-            <List.Item style={{ lineHeight: '1.6' }}>
-              <CloudOutlined style={{ marginRight: 8 }} />
+            <List.Item style={{ lineHeight: '1.7', fontSize: '18px' }}>
+              <Space>
+              <CloudOutlined />
               <Link href="https://n8n.io" target="_blank" rel="noreferrer">
                 Try the free cloud trial on n8n.io
               </Link>
+              </Space>
+            
             </List.Item>
-            <List.Item style={{ lineHeight: '1.6' }}>
+            <List.Item style={{ lineHeight: '1.7', fontSize: '18px' }}>
               <WindowsOutlined style={{ marginRight: 8 }} />
               Or run it locally with <Text strong>my Electron app</Text> (Windows +
               Mac). It’s still under construction, but you can already download
