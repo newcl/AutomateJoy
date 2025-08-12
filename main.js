@@ -5,7 +5,7 @@ const { spawn } = require('child_process');
 const path = require('path');
 
 const fs = require('fs');
-const logFile = path.join(app.getPath('userData'), 'pody.log');
+const logFile = path.join(app.getPath('userData'), 'AutomateJoy.log');
 
 function logToFile(message) {
   fs.appendFileSync(logFile, message + '\n');
@@ -119,8 +119,8 @@ async function ensureN8n() {
     targetPath = path.join(process.resourcesPath, 'n8n-dist');
     zipPath = path.join(process.resourcesPath, 'n8n-dist.tar');  
   } else {
-    targetPath = String.raw`C:\Users\chenl\AppData\Local\Programs\pody\resources\n8n-dist`;
-    zipPath = String.raw`C:\Users\chenl\AppData\Local\Programs\pody\resources\n8n-dist.tar`;
+    targetPath = String.raw`C:\Users\chenl\AppData\Local\Programs\AutomateJoy\resources\n8n-dist`;
+    zipPath = String.raw`C:\Users\chenl\AppData\Local\Programs\AutomateJoy\resources\n8n-dist.tar`;
   }
 
   console.log('Extracting n8n-dist...');

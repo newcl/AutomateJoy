@@ -5,7 +5,7 @@
   "author": "Liang Chen",
   "repository": {
       "type": "git",
-      "url": "https://github.com/newcl/pody.git"
+      "url": "https://github.com/newcl/AutomateJoy.git"
     },
   
   "main": "main.js",
@@ -15,7 +15,7 @@
     "pack": "electron-builder --dir",
     "predist": "cd frontend && npm install && npm run build",
     "dist": "electron-builder",
-    "n8n:prepare": "node scripts/build-n8n-tar-gz.js",
+    "n8n:prepare": "node scripts/build-n8n-tar.js",
     "release": "npm run dist -- --publish always"
   },
   "keywords": [
@@ -46,7 +46,7 @@
       {
         "provider": "github",
         "owner": "newcl",
-        "repo": "pody",
+        "repo": "AutomateJoy",
         "releaseType": "release"
       }
     ],

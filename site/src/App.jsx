@@ -55,7 +55,7 @@ export default function App() {
             <Button
               type="primary"
               icon={<WindowsOutlined />}
-              href="https://github.com/newcl/pody/releases/latest/download/AutomateJoy-Setup-1.0.0.exe"
+              href="https://github.com/newcl/AutomateJoy/releases/latest/download/AutomateJoy-Setup-1.0.0.exe"
               target="_blank"
               rel="noreferrer"
               size="large"
@@ -67,7 +67,7 @@ export default function App() {
             <Button
               type="primary"
               icon={<AppleOutlined />}
-              href="https://github.com/newcl/pody/releases/latest/download/AutomateJoy-1.0.0.dmg"
+              href="https://github.com/newcl/AutomateJoy/releases/latest/download/AutomateJoy-1.0.0.dmg"
               target="_blank"
               rel="noreferrer"
               size="large"
