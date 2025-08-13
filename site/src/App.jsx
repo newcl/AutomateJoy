@@ -89,7 +89,23 @@ export default function App() {
                 size="large"
                 
               >
-                Mac ARM 64
+                Mac (Apple Silicon)
+              </Button>
+    
+              
+            </Col>
+            <Col>
+            
+            <Button
+                type="primary"
+                icon={<AppleOutlined />}
+                href="https://github.com/newcl/AutomateJoy/releases/download/v1.0.0-mac-x64/AutomateJoy-1.0.0-mac-x64.dmg"
+                target="_blank"
+                rel="noreferrer"
+                size="large"
+                
+              >
+                Mac (Intel X64)
               </Button>
     
               
