@@ -83,7 +83,7 @@ export default function App() {
             <Button
                 type="primary"
                 icon={<AppleOutlined />}
-                href="https://github.com/newcl/AutomateJoy/releases/download/v1.0.0-mac-arm64/AutomateJoy-1.0.0-mac-arm64-arm64.dmg"
+                href="https://github.com/newcl/AutomateJoy/releases/download/v1.0.1-mac-arm64/AutomateJoy-1.0.1-mac-arm64-arm64.dmg"
                 target="_blank"
                 rel="noreferrer"
                 size="large"
