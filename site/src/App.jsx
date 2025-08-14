@@ -1,6 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import { Card, Typography, List, Space, Button, Row, Col, Badge } from "antd";
+import { Card, Typography, List, Space, Button, Row, Col, Image } from "antd";
 import {
   WindowsOutlined,
   AppleOutlined,
@@ -9,6 +9,22 @@ import {
 } from "@ant-design/icons";
 
 const { Title, Paragraph, Link, Text } = Typography;
+
+import imgReady from "./assets/automatejoy-ready.png";
+import imgInstall from "./assets/automatejoy-install.png";
+
+const images = [
+  {
+    src: imgInstall,
+    title: "AutomateJoy — Install Progress",
+    // desc: "Shows the loading progress during installation."
+  },
+  {
+    src: imgReady,
+    title: "AutomateJoy — Ready Screen",
+    // desc: "Displayed when the app is ready for browser launch."
+  }
+];
 
 export default function App() {
   return (
@@ -62,6 +78,44 @@ export default function App() {
             </List.Item>
           </List>
         </Card>
+
+        {/* <Row gutter={[24, 24]} justify="center">
+        {images.map((img, idx) => (
+          <Col xs={24} sm={12} md={8} key={idx}>
+            <Image
+                  // alt={img.title}
+                  src={img.src}
+                  style={{
+                    borderRadius: "16px",
+                    width: "300px",
+                    height: "300px"
+                  }}
+                  preview={true}
+                />
+          </Col>
+        ))}
+      </Row> */}
+
+      
+
+      <div style={{ textAlign: "center" }}>
+        {/* <Title level={4}>Screenshots</Title> */}
+<Row gutter={[24, 24]} justify="center">
+        {images.map((img, idx) => (
+          <Col xs={24} sm={12} md={80} key={idx}>
+            <Image
+                  alt={img.title}
+                  src={img.src}
+                  style={{
+                    borderRadius: "8px",
+                  }}
+                  preview={true}
+                />
+          </Col>
+        ))}
+      </Row>
+      </div>
+      
 
         <div style={{ textAlign: "center" }}>
           <Title level={4}>Download</Title>
