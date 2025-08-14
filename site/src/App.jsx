@@ -48,7 +48,7 @@ export default function App() {
             <List.Item style={{ lineHeight: '1.7', fontSize: '18px' }}>
               <Space>
               <CloudOutlined />
-              <Link href="https://n8n.io" target="_blank" rel="noreferrer">
+              <Link href="https://n8n.partnerlinks.io/li25lnhmcj8f" target="_blank" rel="noreferrer">
                 Try the free cloud trial on n8n.io
               </Link>
               </Space>

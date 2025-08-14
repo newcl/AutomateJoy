@@ -39,7 +39,7 @@ function N8nStatus() {
     <div>
       {<Button type="primary" loading={status !== 'ready'} disabled={status !== 'ready'} onClick={openUrl}>Open n8n In Browser</Button>}
       <div>This app is for testing purpose only.</div>
-      <div>Please use <a href='https://n8n.com'>n8n.com</a> for hosted experience.</div>
+      <div>Please use <a href='https://n8n.partnerlinks.io/li25lnhmcj8f'>n8n.com</a> for hosted experience.</div>
     </div>
   );
 }
