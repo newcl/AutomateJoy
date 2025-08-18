@@ -72,9 +72,7 @@ export default function App() {
             </List.Item>
             <List.Item style={{ lineHeight: '1.7', fontSize: '18px' }}>
               <WindowsOutlined style={{ marginRight: 8 }} />
-              Or run it locally with <Text strong>my Electron app</Text> (Windows +
-              Mac). It’s still under construction, but you can already download
-              the latest version below.
+              Or download installers below, just click and start building !
             </List.Item>
           </List>
         </Card>
@@ -98,27 +96,11 @@ export default function App() {
 
       
 
-      <div style={{ textAlign: "center" }}>
-        {/* <Title level={4}>Screenshots</Title> */}
-<Row gutter={[24, 24]} justify="center">
-        {images.map((img, idx) => (
-          <Col xs={24} sm={12} md={80} key={idx}>
-            <Image
-                  alt={img.title}
-                  src={img.src}
-                  style={{
-                    borderRadius: "8px",
-                  }}
-                  preview={true}
-                />
-          </Col>
-        ))}
-      </Row>
-      </div>
+      
       
 
         <div style={{ textAlign: "center" }}>
-          <Title level={4}>Download</Title>
+          
           <Row justify="center" gutter={[16, 16]}>
             <Col>
               <Button
@@ -166,6 +148,27 @@ export default function App() {
             </Col>
           </Row>
         </div>
+
+        <div style={{ textAlign: "center" }}>
+          <Space style={{ marginTop: 24 }}>
+            <Title level={4}>Screenshots</Title>
+            </Space>
+        
+<Row gutter={[24, 24]} justify="center">
+        {images.map((img, idx) => (
+          <Col xs={24} sm={12} md={80} key={idx}>
+            <Image
+                  alt={img.title}
+                  src={img.src}
+                  style={{
+                    borderRadius: "8px",
+                  }}
+                  preview={true}
+                />
+          </Col>
+        ))}
+      </Row>
+      </div>
 
         {/* Feedback Button - fixed to right side, larger and visually pleasing */}
       <div style={{ position: "fixed", top: "60%", right: 24, zIndex: 1000 }}>
