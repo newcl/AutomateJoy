@@ -13,7 +13,6 @@ const { Title, Paragraph, Link, Text } = Typography;
 import imgReady from "./assets/automatejoy-ready.png";
 import imgInstall from "./assets/automatejoy-install.png";
 import { CoffeeOutlined } from "@ant-design/icons";
-import BuyMeACoffeeButton from "./BMC";
 
 const images = [
   {
