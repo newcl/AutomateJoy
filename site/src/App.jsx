@@ -12,6 +12,8 @@ const { Title, Paragraph, Link, Text } = Typography;
 
 import imgReady from "./assets/automatejoy-ready.png";
 import imgInstall from "./assets/automatejoy-install.png";
+import { CoffeeOutlined } from "@ant-design/icons";
+import BuyMeACoffeeButton from "./BMC";
 
 const images = [
   {
@@ -222,29 +224,54 @@ export default function App() {
       </Row>
       </div>
 
-        {/* Feedback Button - fixed to right side, larger and visually pleasing */}
-      <div style={{ position: "fixed", top: "60%", right: 24, zIndex: 1000 }}>
-        <Button
-          type="primary"
-          href="mailto:chenliang.info@gmail.com?subject=AutomateJoy%20Feedback"
-          style={{
-            boxShadow: "0 4px 16px #8883",
-            borderRadius: 32,
-            padding: "18px 32px",
-            fontWeight: 600,
-            fontSize: "1.15rem",
-            background: "linear-gradient(90deg, #36d1c4 0%, #5b86e5 100%)",
-            border: "none",
-            color: "#fff",
-            display: "flex",
-            alignItems: "center",
-            gap: "12px"
-          }}
-          icon={<span style={{fontSize: "1.5rem"}}>💬</span>}
-        >
-          Send Feedback
-        </Button>
-      </div>
+        {/* Buy Me a Coffee Button - fixed to right side, above feedback button */}
+        <div style={{ position: "fixed", top: "56%", right: 24, zIndex: 1000 }}>
+          <Button
+            type="primary"
+            href="https://www.buymeacoffee.com/chelan"
+            target="_blank"
+            style={{
+              boxShadow: "0 4px 16px #ffdd0088",
+              borderRadius: 32,
+              padding: "18px 32px",
+              fontWeight: 600,
+              fontSize: "1.15rem",
+              background: "linear-gradient(90deg, #FFDD00 0%, #FFD700 100%)",
+              border: "none",
+              color: "#000",
+              display: "flex",
+              alignItems: "center",
+              gap: "12px"
+            }}
+            icon={<CoffeeOutlined style={{fontSize: "1.5rem"}} />}
+          >
+            Buy Me a Coffee
+          </Button>
+        </div>
+
+        {/* Feedback Button - fixed to right side, below coffee button */}
+        <div style={{ position: "fixed", top: "68%", right: 24, zIndex: 1000 }}>
+          <Button
+            type="primary"
+            href="mailto:chenliang.info@gmail.com?subject=AutomateJoy%20Feedback"
+            style={{
+              boxShadow: "0 4px 16px #8883",
+              borderRadius: 32,
+              padding: "18px 32px",
+              fontWeight: 600,
+              fontSize: "1.15rem",
+              background: "linear-gradient(90deg, #36d1c4 0%, #5b86e5 100%)",
+              border: "none",
+              color: "#fff",
+              display: "flex",
+              alignItems: "center",
+              gap: "12px"
+            }}
+            icon={<span style={{fontSize: "1.5rem"}}>💬</span>}
+          >
+            Send Feedback
+          </Button>
+        </div>
 
         <footer style={{ textAlign: "center", marginTop: 48, color: "#888" }}>
           Made with ❤️ and a bit of ☕ by AutomateJoy
