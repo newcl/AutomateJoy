@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { Card, Typography, List, Space, Button, Row, Col, Image } from "antd";
 import {
@@ -28,6 +28,23 @@ const images = [
 ];
 
 export default function App() {
+  const [showPopup, setShowPopup] = useState(false);
+
+  const handleDownload = (url) => {
+    const a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setShowPopup(true);
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+
   return (
     <>
       <Helmet>
@@ -71,9 +88,7 @@ export default function App() {
               <Button
                 type="primary"
                 icon={<WindowsOutlined />}
-                href="https://github.com/newcl/AutomateJoy/releases/download/v1.0.0-win-x64/AutomateJoy-Setup-1.0.0-win-x64.exe"
-                target="_blank"
-                rel="noreferrer"
+                onClick={() => handleDownload("https://github.com/newcl/AutomateJoy/releases/download/v1.0.0-win-x64/AutomateJoy-Setup-1.0.0-win-x64.exe")}
                 size="large"
               >
                 Windows X64
@@ -84,11 +99,8 @@ export default function App() {
               <Button
                 type="primary"
                 icon={<AppleOutlined />}
-                href="https://github.com/newcl/AutomateJoy/releases/download/v1.0.1-mac-arm64/AutomateJoy-1.0.1-mac-arm64-arm64.dmg"
-                target="_blank"
-                rel="noreferrer"
+                onClick={() => handleDownload("https://github.com/newcl/AutomateJoy/releases/download/v1.0.1-mac-arm64/AutomateJoy-1.0.1-mac-arm64-arm64.dmg")}
                 size="large"
-                
               >
                 Mac (Apple Silicon)
               </Button>
@@ -98,16 +110,63 @@ export default function App() {
               <Button
                 type="primary"
                 icon={<AppleOutlined />}
-                href="https://github.com/newcl/AutomateJoy/releases/download/v1.0.0-mac-x64/AutomateJoy-1.0.0-mac-x64.dmg"
-                target="_blank"
-                rel="noreferrer"
+                onClick={() => handleDownload("https://github.com/newcl/AutomateJoy/releases/download/v1.0.0-mac-x64/AutomateJoy-1.0.0-mac-x64.dmg")}
                 size="large"
-                
               >
                 Mac (Intel X64)
               </Button>
               <span style={{ position: "absolute", top: -18, right: -8, background: "#faad14", color: "#fff", borderRadius: 8, padding: "2px 10px", fontSize: 13, fontWeight: 600, boxShadow: "0 2px 8px #36d1c488" }}>1-Click .dmg Installer</span>
             </div>
+        {showPopup && (
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            background: 'rgba(255,255,255,0.7)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 2000
+          }}>
+            <div style={{
+              background: '#fff',
+              borderRadius: '12px',
+              boxShadow: '0 2px 16px rgba(0,0,0,0.15)',
+              padding: '32px',
+              textAlign: 'center',
+              minWidth: '320px'
+            }}>
+              <div style={{ fontSize: '1.2em', color: '#555', marginBottom: '16px' }}>
+                Saved you 30+ minutes?
+              </div>
+              <a
+                href="https://www.buymeacoffee.com/chelan"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-block',
+                  background: '#FFDD00',
+                  color: '#333',
+                  fontWeight: 'bold',
+                  padding: '12px 24px',
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                  marginBottom: '12px',
+                  boxShadow: '0 1px 4px rgba(0,0,0,0.08)'
+                }}
+              >
+                Buy Me a Cup of Coffee
+              </a>
+              <div>
+                <button onClick={handleClosePopup} style={{ marginTop: '16px', background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: '1em' }}>
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
             
             {/* <Button type="primary" style={{ minWidth: 170, background: "linear-gradient(90deg, #ff9800 0%, #ff5722 100%)", border: "none", color: "#fff", boxShadow: "0 2px 8px rgba(255, 152, 0, 0.15)", fontWeight: 600, position: "relative" }} href="https://n8n.partnerlinks.io/li25lnhmcj8f" target="_blank" rel="noreferrer" icon={<span style={{marginRight:4}}>🌐</span>}>
               Free Trial on n8n.com
