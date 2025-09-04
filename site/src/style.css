@@ -66,3 +66,7 @@ body {
     color: #777;
   }
   
+  .faq-title {
+  font-size: 24px;   /* absolute size in px */
+  font-weight: bold; /* <b> equivalent */
+}

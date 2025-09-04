@@ -190,7 +190,9 @@ export default function App() {
               </Space>
         </Card>
 
-        <Divider orientation="left" plain><b>FAQ</b></Divider>
+        <Divider orientation="left" plain>
+          <b style={{ fontSize: 24 }}>FAQ</b>
+          </Divider>
 
           <Collapse accordion>
           <Panel header="What is this AutomateJoy app ?" key="1">
