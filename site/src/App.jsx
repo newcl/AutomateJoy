@@ -249,7 +249,7 @@ export default function App() {
             icon={<CoffeeOutlined style={{fontSize: "1.5rem"}} />}
           >
             Buy Me a Coffee
-          </Button>
+          </Button> So I can put my kids through college and I don't need to beg people for money 🙈.
               </Space>
           </Panel>
           <Panel header="Your app works pretty good, can you help me with other software work ?" key="8">
