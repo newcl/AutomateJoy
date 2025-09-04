@@ -197,6 +197,25 @@ export default function App() {
           <Collapse accordion>
           <Panel header="What is this AutomateJoy app ?" key="1">
             <p>AutomateJoy is a simple electron app that packages all the stuff needed to run n8n on your PC, ChatGPT helped to pick this name so that's that.</p>
+            <p>Below are some screenshots after installing the app, you could access n8n through your favourite browser.</p>
+            <div style={{ textAlign: "center" }}>
+          
+        
+<Row gutter={[24, 24]} justify="center">
+        {images.map((img, idx) => (
+          <Col xs={24} sm={12} md={80} key={idx}>
+            <Image
+                  alt={img.title}
+                  src={img.src}
+                  style={{
+                    borderRadius: "8px",
+                  }}
+                  preview={true}
+                />
+          </Col>
+        ))}
+      </Row>
+      </div>
           </Panel>
           <Panel header="Who built this AutomateJoy app 🚧 ?" key="2">
             <p> My name is <a href="https://www.linkedin.com/in/angelleecash/">Liang Chen</a>, I am a software engineer 🧑‍💻, I think n8n is a very awesome productivity tool and people should benefit a lot from automating everyday tasks, and n8n is very generous to allow people to run n8n on your PC, but I can see people without tech background struggling to install this on their computer especially on windows, so I built this vibe coding style 😎 .</p>
@@ -330,26 +349,7 @@ export default function App() {
           </Row>
         </div> */}
 
-        <div style={{ textAlign: "center" }}>
-          <Space style={{ marginTop: 24 }}>
-            <Title level={4}>Screenshots</Title>
-            </Space>
         
-<Row gutter={[24, 24]} justify="center">
-        {images.map((img, idx) => (
-          <Col xs={24} sm={12} md={80} key={idx}>
-            <Image
-                  alt={img.title}
-                  src={img.src}
-                  style={{
-                    borderRadius: "8px",
-                  }}
-                  preview={true}
-                />
-          </Col>
-        ))}
-      </Row>
-      </div>
 
         {/* Buy Me a Coffee Button - fixed to right side, above feedback button */}
         <div style={{ position: "fixed", top: "56%", right: 24, zIndex: 1000 }}>
