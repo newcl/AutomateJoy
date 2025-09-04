@@ -202,7 +202,7 @@ export default function App() {
             <p> My name is <a href="https://www.linkedin.com/in/angelleecash/">Liang Chen</a>, I am a software engineer 🧑‍💻, I think n8n is a very awesome productivity tool and people should benefit a lot from automating everyday tasks, and n8n is very generous to allow people to run n8n on your PC, but I can see people without tech background struggling to install this on their computer especially on windows, so I built this vibe coding style 😎 .</p>
           </Panel>
           <Panel header="Is this computer virus ? I'm not trusting some random dude on the internet 🕵️‍♂️" key="3">
-            <p>It's always a good idea to be cautious about something you download from the internet. The code for this app is <a href="https://github.com/newcl/AutomateJoy">available here</a>, so if know tech well enough you can build executables (.exe/.dmg) from the code directly. If you can not build from source code I recommend you scan the .exe/.dmg before running anything to stay safe 🙌.</p>
+            <p>It's always a good idea to be cautious about something you download from the internet. The code for this app is <a href="https://github.com/newcl/AutomateJoy">available here</a>, so if you know tech well enough you can build executables (.exe/.dmg) from the code directly. If you can not build from source code I recommend you scan the .exe/.dmg before running anything to stay safe 🙌.</p>
           </Panel>
           <Panel header="Nice try, I still don't believe you or your app 🤪" key="4">
             <p>Nice people from <a href="https://n8n.partnerlinks.io/li25lnhmcj8f" >n8n.com offers free trial</a> so you can start automating without installing anything or trusting anybody blindly.</p>
