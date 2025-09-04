@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
-import { Card, Typography, List, Space, Button, Row, Col, Image } from "antd";
+import { Card, Typography, List, Space, Button, Row, Col, Image, Divider, Collapse } from "antd";
 import {
   WindowsOutlined,
   AppleOutlined,
   CloudOutlined,
   RocketOutlined,
 } from "@ant-design/icons";
+
+const { Panel } = Collapse;
+
 
 const { Title, Paragraph, Link, Text } = Typography;
 
@@ -57,15 +60,15 @@ export default function App() {
 
       <div style={{ maxWidth: 720, margin: "2rem auto", padding: "0 1rem" }}>
         {/* Hero Section with SEO-friendly messaging */}
-        <div style={{ textAlign: "center", marginBottom: 36 }}>
-          <Title level={1} style={{ fontSize: "2.8rem", color: "#1890ff", marginBottom: 0 }}>
+        <div style={{ textAlign: "left", marginBottom: 36 }}>
+          <Space/>
+          {/* <Title level={1} style={{ fontSize: "2.8rem", color: "#1890ff", marginBottom: 0 }}>
             <RocketOutlined style={{ marginRight: 12, color: "#ff9800" }} />
             Try n8n Instantly
             <RocketOutlined style={{ marginLeft: 12, color: "#ff9800" }} />
-          </Title>
+          </Title> */}
           <Paragraph style={{ fontSize: "1.25rem", color: "#595959", marginTop: 8 }}>
-            <b>Finally, a true Windows <span style={{color:'#1890ff'}}>.exe</span> and Mac <span style={{color:'#faad14'}}>.dmg</span> installer for n8n!</b><br/>
-            With AutomateJoy, you get a real 1-click installer for n8n—no Node.js, npm, or Docker required. Just download, run, and start automating.
+            AutomateJoy is an 1-click installer to install n8n on your Windows and Mac PC, start automating NOW without installing anything.
           </Paragraph>
         </div>
 
@@ -93,7 +96,7 @@ export default function App() {
               >
                 Windows X64
               </Button>
-              <span style={{ position: "absolute", top: -18, right: -8, background: "#1890ff", color: "#fff", borderRadius: 8, padding: "2px 10px", fontSize: 13, fontWeight: 600, boxShadow: "0 2px 8px #1890ff88" }}>1-Click .exe Installer</span>
+              {/* <span style={{ position: "absolute", top: -18, right: -8, background: "#1890ff", color: "#fff", borderRadius: 8, padding: "2px 10px", fontSize: 13, fontWeight: 600, boxShadow: "0 2px 8px #1890ff88" }}>1-Click .exe Installer</span> */}
             </div>
             <div style={{ position: "relative" }}>
               <Button
@@ -104,7 +107,7 @@ export default function App() {
               >
                 Mac (Apple Silicon)
               </Button>
-              <span style={{ position: "absolute", top: -18, right: -8, background: "#faad14", color: "#fff", borderRadius: 8, padding: "2px 10px", fontSize: 13, fontWeight: 600, boxShadow: "0 2px 8px #36d1c488" }}>1-Click .dmg Installer</span>
+              {/* <span style={{ position: "absolute", top: -18, right: -8, background: "#faad14", color: "#fff", borderRadius: 8, padding: "2px 10px", fontSize: 13, fontWeight: 600, boxShadow: "0 2px 8px #36d1c488" }}>1-Click .dmg Installer</span> */}
             </div>
             <div style={{ position: "relative" }}>
               <Button
@@ -115,7 +118,7 @@ export default function App() {
               >
                 Mac (Intel X64)
               </Button>
-              <span style={{ position: "absolute", top: -18, right: -8, background: "#faad14", color: "#fff", borderRadius: 8, padding: "2px 10px", fontSize: 13, fontWeight: 600, boxShadow: "0 2px 8px #36d1c488" }}>1-Click .dmg Installer</span>
+              {/* <span style={{ position: "absolute", top: -18, right: -8, background: "#faad14", color: "#fff", borderRadius: 8, padding: "2px 10px", fontSize: 13, fontWeight: 600, boxShadow: "0 2px 8px #36d1c488" }}>1-Click .dmg Installer</span> */}
             </div>
         {showPopup && (
           <div style={{
@@ -174,9 +177,7 @@ export default function App() {
             </Button> */}
           </div>
           </Space>
-          <Paragraph style={{ marginTop: 16, color: '#595959', fontSize: '1rem' }}>
-            <b>No Docker, no NodeJS, no Database setup, no endless tutorials, just click and go!</b>
-          </Paragraph>
+          
         </Card>
 
         <Card style={{ marginBottom: 24, background: "#f6faff", border: "1px solid #e6f7ff" }}>
@@ -188,6 +189,72 @@ export default function App() {
             </Button>
               </Space>
         </Card>
+
+        <Divider orientation="left" plain><b>FAQ</b></Divider>
+
+          <Collapse accordion>
+          <Panel header="What is this AutomateJoy app ?" key="1">
+            <p>AutomateJoy is a simple electron app that packages all the stuff needed to run n8n on your PC, ChatGPT helped to pick this name so that's that.</p>
+          </Panel>
+          <Panel header="Who built this AutomateJoy app 🚧 ?" key="2">
+            <p> My name is <a href="https://www.linkedin.com/in/angelleecash/">Liang Chen</a>, I am a software engineer 🧑‍💻, I think n8n is a very awesome productivity tool and people should benefit a lot from automating everyday tasks, and n8n is very generous to allow people to run n8n on your PC, but I can see people without tech background struggling to install this on their computer especially on windows, so I built this vibe coding style 😎 .</p>
+          </Panel>
+          <Panel header="Is this computer virus ? I'm not trusting some random dude on the internet 🕵️‍♂️" key="3">
+            <p>It's always a good idea to be cautious about something you download from the internet. The code for this app is <a href="https://github.com/newcl/AutomateJoy">available here</a>, so if know tech well enough you can build executables (.exe/.dmg) from the code directly. If you can not build from source code I recommend you scan the .exe/.dmg before running anything to stay safe 🙌.</p>
+          </Panel>
+          <Panel header="Nice try, I still don't believe you or your app 🤪" key="4">
+            <p>Nice people from <a href="https://n8n.partnerlinks.io/li25lnhmcj8f" >n8n.com offers free trial</a> so you can start automating without installing anything or trusting anybody blindly.</p>
+            <Space>
+              <Button type="primary" style={{ minWidth: 170, background: "linear-gradient(90deg, #ff9800 0%, #ff5722 100%)", border: "none", color: "#fff", boxShadow: "0 2px 8px rgba(255, 152, 0, 0.15)", fontWeight: 600, position: "relative" }} href="https://n8n.partnerlinks.io/li25lnhmcj8f" target="_blank" rel="noreferrer" icon={<span style={{marginRight:4}}>🌐</span>}>
+              Start Free Trial On n8n.com
+              {/* <span style={{ position: "absolute", top: 6, right: 12, fontSize: 12, color: "#fff", background: "#ff5722", borderRadius: 6, padding: "2px 8px", fontWeight: 500 }}>n8n.com</span> */}
+            </Button>
+              </Space>
+          </Panel>
+          <Panel header="Okay, I feel generous 🎁 today to try your app, how do I use it ?" key="5">
+            <p>The app is a 1 click installer for Windows and Mac, just download it and click it, that's it.</p>
+            
+          </Panel>
+          <Panel header="How do I upgrade n8n through your app ⬆️ ?" key="6">
+            <p>This electron app is bundled a specific version of n8n so you can not directly upgrade it, this also proves the value of the hosted version on n8n.com if constantly upgrading the software is mandatory for you, consider n8n.com.</p>
+            <Space>
+              <Button type="primary" style={{ minWidth: 170, background: "linear-gradient(90deg, #ff9800 0%, #ff5722 100%)", border: "none", color: "#fff", boxShadow: "0 2px 8px rgba(255, 152, 0, 0.15)", fontWeight: 600, position: "relative" }} href="https://n8n.partnerlinks.io/li25lnhmcj8f" target="_blank" rel="noreferrer" icon={<span style={{marginRight:4}}>🌐</span>}>
+              Start Free Trial On n8n.com
+              {/* <span style={{ position: "absolute", top: 6, right: 12, fontSize: 12, color: "#fff", background: "#ff5722", borderRadius: 6, padding: "2px 8px", fontWeight: 500 }}>n8n.com</span> */}
+            </Button>
+              </Space>
+          </Panel>
+          <Panel header="Okay, you seem like a good guy, how do I thank you for your time ❤️ ?" key="7">
+            
+            <Space>
+              <Button
+            type="primary"
+            href="https://www.buymeacoffee.com/chelan"
+            target="_blank"
+            style={{
+              boxShadow: "0 4px 16px #ffdd0088",
+              borderRadius: 32,
+              padding: "18px 32px",
+              fontWeight: 600,
+              fontSize: "1.15rem",
+              background: "linear-gradient(90deg, #FFDD00 0%, #FFD700 100%)",
+              border: "none",
+              color: "#000",
+              display: "flex",
+              alignItems: "center",
+              gap: "12px"
+            }}
+            icon={<CoffeeOutlined style={{fontSize: "1.5rem"}} />}
+          >
+            Buy Me a Coffee
+          </Button>
+              </Space>
+          </Panel>
+          <Panel header="Your app works pretty good, can you help me with other software work ?" key="8">
+            <p>Yes, you can reach me at chenliang.info@gmail.com.</p>
+            
+          </Panel>
+        </Collapse>
 
         {/* <Row gutter={[24, 24]} justify="center">
         {images.map((img, idx) => (
