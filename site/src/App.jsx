@@ -142,7 +142,7 @@ export default function App() {
               minWidth: '320px'
             }}>
               <div style={{ fontSize: '1.2em', color: '#555', marginBottom: '16px' }}>
-                My daughter said you should buy my dad a cup of coffee 😅
+                My daughter said "you should buy my dad a cup of coffee 😅"
               </div>
               <a
                 href="https://www.buymeacoffee.com/chelan"
