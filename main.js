@@ -335,6 +335,8 @@ function createWindow() {
     show: false, // show when ready
   });
 
+  mainWindow.removeMenu(); // Hide the application menu
+
   mainWindow.once('ready-to-show', async () => {
     console.log('Ready to show');
     mainWindow.show();
