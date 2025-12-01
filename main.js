@@ -88,6 +88,10 @@ ipcMain.handle('check-mark-file', async () => {
   return fs.existsSync(n8nInstalledMarkFile);
 });
 
+ipcMain.handle('get-n8n-data-folder', async () => {
+  return path.join(app.getPath('userData'), 'n8n-data');
+});
+
 
 let n8nProcess;
 
@@ -335,7 +339,10 @@ function createWindow() {
     show: false, // show when ready
   });
 
-  mainWindow.removeMenu(); // Hide the application menu
+  // Hide menu only in packaged version, show it when running locally for debugging
+  if (app.isPackaged) {
+    mainWindow.removeMenu();
+  }
 
   mainWindow.once('ready-to-show', async () => {
     console.log('Ready to show');

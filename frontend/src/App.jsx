@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import N8nStatus from './N8nStatus'
+import N8nPanel from './N8nStatus'
 import { Flex, Progress, Spin } from 'antd';
 
 function App() {
@@ -45,7 +45,7 @@ function App() {
 
   return (
     <div>
-      <N8nStatus />
+      <N8nPanel />
     </div>
   )
 }
