@@ -184,26 +184,62 @@ sed -i 's/1.0.0/1.0.1/g' package.json
 
 ### Release Single Platform
 
+**With n8n version in installer name (recommended):**
+
 ```bash
 # Verify GH_TOKEN is set
 echo $GH_TOKEN
 
-# Windows x64 only
+# Get n8n version for use in installer name
+N8N_VER=$(node scripts/get-n8n-version.js)
+
+# Windows x64
+npm run release-win-x64 --config.extraMetadata.version="1.0.1-n8n${N8N_VER}-win-x64"
+
+# Windows x86 (use Node v22.x for 32-bit support)
+NODE_VERSION=v22.13.0 npm run release-win-x86 --config.extraMetadata.version="1.0.1-n8n${N8N_VER}-win-x86"
+
+# macOS x64 (requires macOS)
+npm run release-mac-x64 --config.extraMetadata.version="1.0.1-n8n${N8N_VER}-mac-x64"
+
+# macOS arm64 (requires macOS)
+npm run release-mac-arm64 --config.extraMetadata.version="1.0.1-n8n${N8N_VER}-mac-arm64"
+```
+
+**Without n8n version (basic):**
+
+```bash
 npm run release-win-x64
-
-# Windows x86 only (use Node v22.x for 32-bit support)
 NODE_VERSION=v22.13.0 npm run release-win-x86
-
-# macOS x64 only (requires macOS)
 npm run release-mac-x64
-
-# macOS arm64 only (requires macOS)
 npm run release-mac-arm64
 ```
+
+**Installer names with n8n version:**
+- `AutomateJoy Setup 1.0.1-n8n1.105.4-win-x64.exe`
+- `AutomateJoy Setup 1.0.1-n8n1.105.4-win-x86.exe`
+- `AutomateJoy-1.0.1-n8n1.105.4-mac-x64.dmg`
 
 ### Release All Platforms
 
 **Note:** Must run on the appropriate OS (Windows for Windows builds, macOS for macOS builds).
+
+**With n8n version in installer names:**
+
+```bash
+# Get n8n version
+N8N_VER=$(node scripts/get-n8n-version.js)
+
+# All Windows releases (x64 + x86)
+npm run release-win-x64 --config.extraMetadata.version="1.0.1-n8n${N8N_VER}-win-x64" && \
+  NODE_VERSION=v22.13.0 npm run release-win-x86 --config.extraMetadata.version="1.0.1-n8n${N8N_VER}-win-x86"
+
+# All macOS releases (run on macOS)
+npm run release-mac-arm64 --config.extraMetadata.version="1.0.1-n8n${N8N_VER}-mac-arm64" && \
+  npm run release-mac-x64 --config.extraMetadata.version="1.0.1-n8n${N8N_VER}-mac-x64"
+```
+
+**Without n8n version (basic):**
 
 ```bash
 # All Windows releases (x64 + x86)
@@ -381,10 +417,14 @@ Marker files prevent redundant work:
 
 ### n8n Version
 
-- Defined in `n8n-dist/package.json`
+- Defined in `n8n-dist/package.json` under `dependencies.n8n`
 - Auto-installed during build: `npm install` in `n8n-dist/`
 - Check available versions: `npm view n8n versions`
 - Check requirements: `npm view n8n@<version> engines`
+- **Get current n8n version for installer naming:**
+  ```bash
+  node scripts/get-n8n-version.js  # outputs e.g., "1.105.4"
+  ```
 
 ---
 
@@ -419,11 +459,14 @@ TARGET_ARCH=x64 npm run build-win-x64
 # 2. Set GitHub token
 export GH_TOKEN='ghp_xxxxx'
 
-# 3. Release both Windows versions
-npm run release-win-x64
-NODE_VERSION=v22.13.0 npm run release-win-x86
+# 3. Get n8n version for installer naming
+N8N_VER=$(node scripts/get-n8n-version.js)
 
-# 4. Check GitHub: https://github.com/newcl/AutomateJoy/releases
+# 4. Release both Windows versions with n8n version in name
+npm run release-win-x64 --config.extraMetadata.version="1.0.1-n8n${N8N_VER}-win-x64"
+NODE_VERSION=v22.13.0 npm run release-win-x86 --config.extraMetadata.version="1.0.1-n8n${N8N_VER}-win-x86"
+
+# 5. Check GitHub: https://github.com/newcl/AutomateJoy/releases
 ```
 
 ### Release Version 1.0.1 (All platforms, requires macOS)
@@ -434,10 +477,14 @@ NODE_VERSION=v22.13.0 npm run release-win-x86
 # 2. Set GitHub token
 export GH_TOKEN='ghp_xxxxx'
 
-# 3. Release all platforms
-npm run release-all
+# 3. Get n8n version
+N8N_VER=$(node scripts/get-n8n-version.js)
 
-# (Builds: mac-arm64, mac-x64, win-x64, win-x86)
+# 4. Release all platforms with n8n version in name
+npm run release-mac-arm64 --config.extraMetadata.version="1.0.1-n8n${N8N_VER}-mac-arm64"
+npm run release-mac-x64 --config.extraMetadata.version="1.0.1-n8n${N8N_VER}-mac-x64"
+npm run release-win-x64 --config.extraMetadata.version="1.0.1-n8n${N8N_VER}-win-x64"
+NODE_VERSION=v22.13.0 npm run release-win-x86 --config.extraMetadata.version="1.0.1-n8n${N8N_VER}-win-x86"
 ```
 
 ### Clean Full Rebuild

@@ -21,10 +21,10 @@
     "build-mac-x64": "cross-env TARGET_ARCH=x64 npm run prebuild-node && electron-builder --mac dmg --x64",
     "build-win-x64": "cross-env TARGET_ARCH=x64 npm run prebuild-node && electron-builder --win nsis --x64",
     "build-win-x86": "cross-env TARGET_ARCH=x86 npm run prebuild-node && electron-builder --win nsis --x86",
-    "release-mac-arm64": "cross-env TARGET_ARCH=arm64 npm run prebuild-node && electron-builder --mac dmg --arm64 --publish=always --config.extraMetadata.version=1.0.1-mac-arm64",
-    "release-mac-x64": "cross-env TARGET_ARCH=x64 npm run prebuild-node && electron-builder --mac dmg --x64 --publish=always --config.extraMetadata.version=1.0.0-mac-x64",
-    "release-win-x64": "cross-env TARGET_ARCH=x64 npm run prebuild-node && electron-builder --win nsis --x64 --publish=always --config.extraMetadata.version=1.0.1-win-x64",
-    "release-win-x86": "cross-env TARGET_ARCH=x86 npm run prebuild-node && electron-builder --win nsis --x86 --publish=always --config.extraMetadata.version=1.0.1-win-x86",
+    "release-mac-arm64": "node scripts/release-with-n8n-version.js mac-arm64",
+    "release-mac-x64": "node scripts/release-with-n8n-version.js mac-x64",
+    "release-win-x64": "node scripts/release-with-n8n-version.js win-x64",
+    "release-win-x86": "node scripts/release-with-n8n-version.js win-x86",
     "release-all": "npm run release-mac-arm64 && npm run release-mac-x64 && npm run release-win-x64 && npm run release-win-x86"
   },
   "keywords": [
