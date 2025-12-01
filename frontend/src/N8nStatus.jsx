@@ -7,6 +7,7 @@ const { Text } = Typography;
 function N8nPanel() {
   const [status, setStatus] = useState('starting');
   const [countdown, setCountdown] = useState(10);
+  const [countdownComplete, setCountdownComplete] = useState(false);
   const [stats, setStats] = useState({
     workflowCount: 0,
     executionCount: 0,
@@ -18,7 +19,6 @@ function N8nPanel() {
 
   const openUrl = () => {
     window.electronAPI.openUrl('http://localhost:5678');
-    setCountdown(10); // Reset countdown after clicking
   };
 
   const openDataFolder = () => {
@@ -31,13 +31,15 @@ function N8nPanel() {
     window.electronAPI.openUrl('https://n8n.partnerlinks.io/li25lnhmcj8f');
   };
 
-  // Countdown timer for Open n8n button
+  // Countdown timer for Open n8n button - runs only once
   useEffect(() => {
-    if (countdown > 0) {
+    if (countdown > 0 && !countdownComplete) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
       return () => clearTimeout(timer);
+    } else if (countdown === 0 && !countdownComplete) {
+      setCountdownComplete(true);
     }
-  }, [countdown]);
+  }, [countdown, countdownComplete]);
 
   // Check n8n status
   useEffect(() => {
@@ -155,7 +157,12 @@ function N8nPanel() {
             showIcon
           />
         ) : (
-          <>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: '700px', 
+            gap: '16px',
+            justifyContent: 'start'
+          }}>
             <Alert
               message={
                 <span>
@@ -175,8 +182,8 @@ function N8nPanel() {
               }
               type="warning"
               showIcon
-              style={{ marginBottom: '8px' }}
             />
+            
             <Row gutter={16}>
               <Col xs={6} sm={6}>
                 <Statistic
@@ -243,7 +250,6 @@ function N8nPanel() {
                 type="error"
                 icon={<ExclamationCircleOutlined />}
                 showIcon
-                style={{ marginTop: '16px' }}
               />
             )}
 
@@ -254,7 +260,6 @@ function N8nPanel() {
                 type="warning"
                 icon={<ExclamationCircleOutlined />}
                 showIcon
-                style={{ marginTop: '16px' }}
               />
             )}
 
@@ -291,6 +296,12 @@ function N8nPanel() {
                     local: <CloseCircleOutlined style={{ color: '#ff4d4f', fontSize: '22px' }} />,
                     cloud: <CheckCircleOutlined style={{ color: '#52c41a', fontSize: '22px' }} />,
                   },
+                  {
+                    key: '6',
+                    feature: '',
+                    local: 'button',
+                    cloud: 'button',
+                  },
                 ]}
                 columns={[
                   {
@@ -306,7 +317,46 @@ function N8nPanel() {
                     key: 'local',
                     align: 'center',
                     width: 250,
-                    render: (icon) => <div style={{ display: 'flex', justifyContent: 'center', padding: '4px 0' }}>{icon}</div>,
+                    render: (icon, record, index) => {
+                      if (index === 5) {
+                        return (
+                          <div style={{ display: 'flex', justifyContent: 'center', padding: '4px 0' }}>
+                            <Dropdown.Button
+                              type="default"
+                              size="large"
+                              onClick={openUrl}
+                              menu={{
+                                items: [
+                                  {
+                                    key: 'open-data-folder',
+                                    label: 'Open n8n data folder',
+                                    onClick: openDataFolder,
+                                  },
+                                ],
+                              }}
+                              disabled={status !== 'ready' || !countdownComplete}
+                              style={{
+                                width: '100%',
+                                height: '44px',
+                                fontSize: '14px',
+                                fontWeight: '500',
+                              }}
+                              buttonsRender={([leftButton, rightButton]) => [
+                                React.cloneElement(leftButton, { style: { ...leftButton.props.style, flex: 1 } }),
+                                rightButton,
+                              ]}
+                            >
+                              {status !== 'ready' || !countdownComplete ? (
+                                <Spin size="small" />
+                              ) : (
+                                'Open Local n8n'
+                              )}
+                            </Dropdown.Button>
+                          </div>
+                        );
+                      }
+                      return <div style={{ display: 'flex', justifyContent: 'center', padding: '4px 0' }}>{icon}</div>;
+                    },
                   },
                   {
                     title: 'n8n.com',
@@ -314,7 +364,30 @@ function N8nPanel() {
                     key: 'cloud',
                     align: 'center',
                     width: 250,
-                    render: (icon) => <div style={{ display: 'flex', justifyContent: 'center', padding: '4px 0' }}>{icon}</div>,
+                    render: (icon, record, index) => {
+                      if (index === 5) {
+                        return (
+                          <div style={{ display: 'flex', justifyContent: 'center', padding: '4px 0' }}>
+                            <Button
+                              type="primary"
+                              size="large"
+                              block
+                              onClick={handleOpenSignup}
+                              style={{ 
+                                height: '44px',
+                                fontSize: '14px',
+                                fontWeight: '500',
+                                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
+                                borderColor: 'transparent' 
+                              }}
+                            >
+                              Sign Up n8n.com Free
+                            </Button>
+                          </div>
+                        );
+                      }
+                      return <div style={{ display: 'flex', justifyContent: 'center', padding: '4px 0' }}>{icon}</div>;
+                    },
                   },
                 ]}
                 pagination={false}
@@ -323,63 +396,8 @@ function N8nPanel() {
                 style={{ marginBottom: '0' }}
                 showHeader={true}
               />
-
-              {/* Buttons - positioned to align with table columns using absolute pixel widths */}
-              <div style={{ display: 'flex', paddingLeft: '0', paddingRight: '0' }}>
-                <div style={{ width: '200px' }}></div>
-                <div style={{ width: '250px', paddingRight: '12px' }}>
-                  <Dropdown.Button
-                    type="default"
-                    size="large"
-                    onClick={openUrl}
-                    menu={{
-                      items: [
-                        {
-                          key: 'open-data-folder',
-                          label: 'Open n8n data folder',
-                          onClick: openDataFolder,
-                        },
-                      ],
-                    }}
-                    disabled={status !== 'ready' || countdown > 0}
-                    style={{
-                      width: '100%',
-                      height: '44px',
-                      fontSize: '14px',
-                      fontWeight: '500',
-                    }}
-                    buttonsRender={([leftButton, rightButton]) => [
-                      React.cloneElement(leftButton, { style: { ...leftButton.props.style, flex: 1 } }),
-                      rightButton,
-                    ]}
-                  >
-                    {status !== 'ready' || countdown > 0 ? (
-                      <Spin size="small" />
-                    ) : (
-                      'Open Local n8n'
-                    )}
-                  </Dropdown.Button>
-                </div>
-                <div style={{ width: '250px', paddingLeft: '12px' }}>
-                  <Button
-                    type="primary"
-                    size="large"
-                    block
-                    onClick={handleOpenSignup}
-                    style={{ 
-                      height: '44px',
-                      fontSize: '14px',
-                      fontWeight: '500',
-                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
-                      borderColor: 'transparent' 
-                    }}
-                  >
-                    Sign Up n8n.com Free
-                  </Button>
-                </div>
-              </div>
             </Card>
-          </>
+          </div>
         )}
       </Space>
     </Card>
