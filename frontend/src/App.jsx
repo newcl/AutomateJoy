@@ -38,8 +38,8 @@ function App() {
     return (<Flex gap="small" vertical>
       <Spin size='large' />
       {progress != null && <Progress percent={(progress*100).toFixed(2)} status="active" />}
-      <div>This app is for testing purpose only.</div>
-      <div>Please use <a href='https://n8n.partnerlinks.io/li25lnhmcj8f'>n8n.com</a> for hosted experience.</div>
+      
+      <div>Please use <a href="#" onClick={(e) => { e.preventDefault(); window.electronAPI.openUrl('https://n8n.partnerlinks.io/li25lnhmcj8f'); }}>n8n.com</a> for hosted experience.</div>
     </Flex>      );
   }
 

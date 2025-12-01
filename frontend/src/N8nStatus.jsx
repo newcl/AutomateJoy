@@ -150,12 +150,201 @@ function N8nPanel() {
             <Spin size="large" />
           </div>
         ) : stats.error ? (
-          <Alert
-            message="Unable to Load Stats"
-            description="Make sure n8n is running on port 5678"
-            type="error"
-            showIcon
-          />
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: '700px', 
+            gap: '16px',
+            justifyContent: 'start'
+          }}>
+            <Alert
+              message={
+                <span>
+                  Workflows are stored only on this PC. Use{' '}
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleOpenSignup();
+                    }}
+                    style={{ textDecoration: 'underline', color: 'inherit', fontWeight: 500 }}
+                  >
+                    n8n.com
+                  </a>{' '}
+                  to avoid data loss and access anywhere.
+                </span>
+              }
+              type="warning"
+              showIcon
+            />
+            
+            <Row gutter={16}>
+              <Col xs={6} sm={6}>
+                <Statistic
+                  title="Workflows"
+                  value="-"
+                  prefix={<CloudOutlined />}
+                  valueStyle={{ color: '#1890ff' }}
+                />
+              </Col>
+              <Col xs={6} sm={6}>
+                <Statistic
+                  title="Executions"
+                  value="-"
+                  valueStyle={{ color: '#52c41a' }}
+                />
+              </Col>
+              <Col xs={6} sm={6}>
+                <Statistic
+                  title="Failed"
+                  value="-"
+                  valueStyle={{ color: '#8c8c8c' }}
+                />
+              </Col>
+              <Col xs={6} sm={6}>
+                <Statistic
+                  title="Credentials"
+                  value="-"
+                  prefix={<SafetyOutlined />}
+                  valueStyle={{ color: '#8c8c8c' }}
+                />
+              </Col>
+            </Row>
+
+            <Card type="inner" style={{ background: 'transparent', padding: '0', marginTop: '0', border: 'none' }}>
+              <Table
+                dataSource={[
+                  {
+                    key: '1',
+                    feature: 'Cloud Backup',
+                    local: <CloseCircleOutlined style={{ color: '#ff4d4f', fontSize: '22px' }} />,
+                    cloud: <CheckCircleOutlined style={{ color: '#52c41a', fontSize: '22px' }} />,
+                  },
+                  {
+                    key: '2',
+                    feature: 'Access Anywhere',
+                    local: <CloseCircleOutlined style={{ color: '#ff4d4f', fontSize: '22px' }} />,
+                    cloud: <CheckCircleOutlined style={{ color: '#52c41a', fontSize: '22px' }} />,
+                  },
+                  {
+                    key: '3',
+                    feature: 'Team Collaboration',
+                    local: <CloseCircleOutlined style={{ color: '#ff4d4f', fontSize: '22px' }} />,
+                    cloud: <CheckCircleOutlined style={{ color: '#52c41a', fontSize: '22px' }} />,
+                  },
+                  {
+                    key: '4',
+                    feature: 'Advanced Features',
+                    local: <CloseCircleOutlined style={{ color: '#ff4d4f', fontSize: '22px' }} />,
+                    cloud: <CheckCircleOutlined style={{ color: '#52c41a', fontSize: '22px' }} />,
+                  },
+                  {
+                    key: '5',
+                    feature: 'Data Loss Protection',
+                    local: <CloseCircleOutlined style={{ color: '#ff4d4f', fontSize: '22px' }} />,
+                    cloud: <CheckCircleOutlined style={{ color: '#52c41a', fontSize: '22px' }} />,
+                  },
+                  {
+                    key: '6',
+                    feature: '',
+                    local: 'button',
+                    cloud: 'button',
+                  },
+                ]}
+                columns={[
+                  {
+                    title: '',
+                    dataIndex: 'feature',
+                    key: 'feature',
+                    width: 200,
+                    render: (text) => <span style={{ fontSize: '15px', fontWeight: '500', color: '#262626' }}>{text}</span>,
+                  },
+                  {
+                    title: 'Local n8n',
+                    dataIndex: 'local',
+                    key: 'local',
+                    align: 'center',
+                    width: 250,
+                    render: (icon, record, index) => {
+                      if (index === 5) {
+                        return (
+                          <div style={{ display: 'flex', justifyContent: 'center', padding: '4px 0' }}>
+                            <Dropdown.Button
+                              type="default"
+                              size="large"
+                              onClick={openUrl}
+                              menu={{
+                                items: [
+                                  {
+                                    key: 'open-data-folder',
+                                    label: 'Open n8n data folder',
+                                    onClick: openDataFolder,
+                                  },
+                                ],
+                              }}
+                              disabled={status !== 'ready' || !countdownComplete}
+                              style={{
+                                width: '100%',
+                                height: '44px',
+                                fontSize: '14px',
+                                fontWeight: '500',
+                              }}
+                              buttonsRender={([leftButton, rightButton]) => [
+                                React.cloneElement(leftButton, { style: { ...leftButton.props.style, flex: 1 } }),
+                                rightButton,
+                              ]}
+                            >
+                              {status !== 'ready' || !countdownComplete ? (
+                                <Spin size="small" />
+                              ) : (
+                                'Open Local n8n'
+                              )}
+                            </Dropdown.Button>
+                          </div>
+                        );
+                      }
+                      return <div style={{ display: 'flex', justifyContent: 'center', padding: '4px 0' }}>{icon}</div>;
+                    },
+                  },
+                  {
+                    title: 'n8n.com',
+                    dataIndex: 'cloud',
+                    key: 'cloud',
+                    align: 'center',
+                    width: 250,
+                    render: (icon, record, index) => {
+                      if (index === 5) {
+                        return (
+                          <div style={{ display: 'flex', justifyContent: 'center', padding: '4px 0' }}>
+                            <Button
+                              type="primary"
+                              size="large"
+                              block
+                              onClick={handleOpenSignup}
+                              style={{ 
+                                height: '44px',
+                                fontSize: '14px',
+                                fontWeight: '500',
+                                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
+                                borderColor: 'transparent' 
+                              }}
+                            >
+                              Sign Up n8n.com Free
+                            </Button>
+                          </div>
+                        );
+                      }
+                      return <div style={{ display: 'flex', justifyContent: 'center', padding: '4px 0' }}>{icon}</div>;
+                    },
+                  },
+                ]}
+                pagination={false}
+                size="small"
+                bordered
+                style={{ marginBottom: '0' }}
+                showHeader={true}
+              />
+            </Card>
+          </div>
         ) : (
           <div style={{ 
             display: 'grid', 

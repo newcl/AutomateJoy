@@ -91,7 +91,7 @@ export default function App() {
               <Button
                 type="primary"
                 icon={<WindowsOutlined />}
-                onClick={() => handleDownload("https://github.com/newcl/AutomateJoy/releases/download/v1.0.0-win-x64/AutomateJoy-Setup-1.0.0-win-x64.exe")}
+                onClick={() => handleDownload("https://github.com/newcl/AutomateJoy/releases/download/v1.0.2-n8n1.105.4-win-x64/AutomateJoy-Setup-1.0.2-n8n1.105.4-win-x64.exe")}
                 size="large"
               >
                 Windows X64

@@ -13,11 +13,22 @@ if (!platform || !['mac-arm64', 'mac-x64', 'win-x64', 'win-x86'].includes(platfo
 
 // Read n8n version
 const n8nPackageJson = path.join(__dirname, '../n8n-dist/package.json');
+const mainPackageJson = path.join(__dirname, '../package.json');
 let n8nVersion = '1.0.0';
+let appVersion = '1.0.0';
+
+// Read app version from main package.json
+try {
+  const mainPkg = JSON.parse(fs.readFileSync(mainPackageJson, 'utf8'));
+  appVersion = mainPkg.version || '1.0.0';
+} catch (err) {
+  console.warn('Warning: Could not read app version, using default:', appVersion);
+}
 
 try {
   const pkg = JSON.parse(fs.readFileSync(n8nPackageJson, 'utf8'));
   const n8nDep = pkg.dependencies.n8n || pkg.devDependencies?.n8n;
+  
   if (n8nDep) {
     n8nVersion = n8nDep.replace(/^[\^~=]+/, '');
   }
@@ -30,23 +41,23 @@ const platformMap = {
   'win-x64': {
     arch: 'x64',
     target: '--win nsis --x64',
-    version: `1.0.1-n8n${n8nVersion}-win-x64`
+    version: `${appVersion}-n8n${n8nVersion}-win-x64`
   },
   'win-x86': {
     arch: 'x86',
     target: '--win nsis --x86',
-    version: `1.0.1-n8n${n8nVersion}-win-x86`,
+    version: `${appVersion}-n8n${n8nVersion}-win-x86`,
     nodeVersion: 'v22.13.0'  // x86 requires Node 22.x
   },
   'mac-x64': {
     arch: 'x64',
     target: '--mac dmg --x64',
-    version: `1.0.1-n8n${n8nVersion}-mac-x64`
+    version: `${appVersion}-n8n${n8nVersion}-mac-x64`
   },
   'mac-arm64': {
     arch: 'arm64',
     target: '--mac dmg --arm64',
-    version: `1.0.1-n8n${n8nVersion}-mac-arm64`
+    version: `${appVersion}-n8n${n8nVersion}-mac-arm64`
   }
 };
 
