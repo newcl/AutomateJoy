@@ -31,15 +31,15 @@ function N8nPanel() {
     window.electronAPI.openUrl('https://n8n.partnerlinks.io/li25lnhmcj8f');
   };
 
-  // Countdown timer for Open n8n button - runs only once
+  // Countdown timer for Open n8n button - runs only once after n8n is ready
   useEffect(() => {
-    if (countdown > 0 && !countdownComplete) {
+    if (status === 'ready' && countdown > 0 && !countdownComplete) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
       return () => clearTimeout(timer);
-    } else if (countdown === 0 && !countdownComplete) {
+    } else if (status === 'ready' && countdown === 0 && !countdownComplete) {
       setCountdownComplete(true);
     }
-  }, [countdown, countdownComplete]);
+  }, [countdown, countdownComplete, status]);
 
   // Check n8n status
   useEffect(() => {
